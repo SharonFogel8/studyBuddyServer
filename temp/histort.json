@@ -1,0 +1,32 @@
+{
+    "Chats": [
+        {
+            "chat_history": [
+                {
+                    "type": "HumanMessage",
+                    "content": "what dog eat?"
+                },
+                {
+                    "type": "AIMessage",
+                    "content": "Dogs should have a healthy balanced diet that meets their nutritional needs. They must have access to fresh clean drinking water at all times. It is advised to feed dogs at least once a day, but generally, it is better to feed them twice a day. Some dogs may have different dietary needs, so it's best to consult with a vet for advice on their specific diet."
+                },
+                {
+                    "type": "HumanMessage",
+                    "content": "how many time dog drink?"
+                },
+                {
+                    "type": "AIMessage",
+                    "content": "Dogs should have access to fresh clean drinking water at all times. It is important for their health and well-being. There isn't a specific number of times a dog should drink water, but they should have constant access to it throughout the day."
+                },
+                {
+                    "type": "HumanMessage",
+                    "content": "how many time dog eat?"
+                },
+                {
+                    "type": "AIMessage",
+                    "content": "Dogs should be fed at least once a day, but it is generally advised to feed them twice a day."
+                }
+            ]
+        }
+    ]
+}
