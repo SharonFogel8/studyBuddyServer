@@ -97,3 +97,6 @@ def save_text_to_db(vectorestore, my_user):
     vectore_history = MongoDBAtlasVectorSearch(text_key=my_user.current_chat, embedding_key=my_user.uid, embedding=OpenAIEmbeddings())
     vectore_history.aadd_documents()
 
+
+
+
