@@ -4,6 +4,7 @@ import pymongo
 from pymongo.server_api import ServerApi
 import uuid
 from streamlit_cookies_manager import EncryptedCookieManager
+import define
 
 # Initialize the cookie manager
 cookies = EncryptedCookieManager(
@@ -16,12 +17,16 @@ if not cookies.ready():
 
 # Connect to the DB.
 @st.cache_resource
+def connect_users_db():
+    client = connect_db()
+    db = client.get_database('main')
+    return db.users
+
 def connect_db():
     client = pymongo.MongoClient(
         "mongodb+srv://noy4958:StudyBuddy@cluster0.ldrqjou.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0",
         server_api=ServerApi('1'))
-    db = client.get_database('main')
-    return db.users
+    return client
 
 
 def select_signup():
@@ -56,8 +61,15 @@ def get_user_uid():
     return cookies["unique_key"]
 
 
+def get_session_from_db(uid: str):
+    client = connect_db()
+    db = client.get_database(define.CHATS)
+    return db[uid].find({})
+
+
+
 def login():
-    user_db = connect_db()
+    user_db = connect_users_db()
     # Initialize Session States.
     if 'username' not in st.session_state:
         st.session_state.username = cookies.get("username", "")

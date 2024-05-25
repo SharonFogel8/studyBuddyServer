@@ -32,7 +32,6 @@ def handle_user_input():
     logging.info("write to history.json")
 
     ui.show_chat()
-
     return response
 
 
