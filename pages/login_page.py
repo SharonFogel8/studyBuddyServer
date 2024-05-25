@@ -32,16 +32,16 @@ def save_unique_key():
     unique_key = str(uuid.uuid4())
     cookies["unique_key"] = unique_key
 
-def update_unique_key():
-    unique_key = str(uuid.uuid4())
-    cookies["unique_key"] = unique_key
 
-
-def user_update(name: str, email: str):
+def user_update(name: str):
     st.session_state.username = name
     save_unique_key()
     cookies["username"] = name
-    cookies["email"] = email
+
+
+def update_unique_key():
+    unique_key = str(uuid.uuid4())
+    cookies["unique_key"] = unique_key
 
 
 def get_user_name():
@@ -58,9 +58,6 @@ def get_user_uid():
 
 def login():
     user_db = connect_db()
-    print("got here!")
-    print(cookies.get("username", ""))
-    print(cookies.keys())
     # Initialize Session States.
     if 'username' not in st.session_state:
         st.session_state.username = cookies.get("username", "")
@@ -92,7 +89,7 @@ def login():
                     if new_user_pas != user_pas_conf:
                         st.sidebar.error('Passwords do not match')
                     else:
-                        user_update(new_username, new_user_email)
+                        user_update(new_username)
                         user_db.insert_one({'log': new_username, 'email': new_user_email, 'pass': new_user_pas})
                         st.sidebar.success('You have successfully registered!')
                         st.experimental_rerun()  # Refresh to update UI
@@ -106,7 +103,7 @@ def login():
         if login:
             if user_db.find_one({'log': username, 'pass': user_pas}):
                 user_update(username)
-                st.rerun()  # Refresh to update UI
+                st.experimental_rerun()  # Refresh to update UI
             else:
                 st.sidebar.error("Username or Password is incorrect. Please try again or create an account.")
     else:

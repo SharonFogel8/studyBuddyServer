@@ -18,13 +18,17 @@ def main():
 
     login()
     # print(st.session_state.username)
+    print(cookies)
     my_user = user(name=cookies["username"], uid=cookies["unique_key"], mail='cookies["email"]')
-    st.write(css, unsafe_allow_html=True)
     buttons_actions.create_process_button(my_user)
+    print(cookies)
 
-    with st.sidebar:
-        buttons_actions.new_chat_button(my_user)
-        # data_manager.import_history_file()
+    st.write(css, unsafe_allow_html=True)
+
+
+    # with st.sidebar:
+    #     buttons_actions.new_chat_button(my_user)
+    #     # data_manager.import_history_file()
 
 #משימות שלא סיימתי : להחליט אם להשאיר את chats כlist או להפוך את זה לhash map ואז כששומרים שיחה צריך להחליט איך להגיד לו לאיזה שיחה להשתייך
 # בתוך chats צריך להיות dict של History chat, summarize, QA
