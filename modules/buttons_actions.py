@@ -32,10 +32,8 @@ def process_button_clicked(my_user: user ,pdf_docs):
         raw_text = pdf_handler.extract_text_from_pdfs(pdf_docs)
         text_chunks = text_processor.split_text_into_chunks(raw_text)
         vectorstore = text_processor.create_vector_store(text_chunks)
-        print(vectorstore)
         my_user.add_new_chat()
-
-        # data_manager.save_pdf_files(vectorstore, 0)
+        data_manager.save_text_chunks_to_db(text_chunks, my_user.current_chat, my_user.uid)
     create_button(vectorstore, button_name=define.SUMMARIZE_BUTTON, func_click=summarized_clicked)
     create_button(my_user, vectorstore, button_name=define.CHAT_BUTTON, func_click=chat_clicked)
     create_button(vectorstore, raw_text, button_name=define.GENERATE_QUESTION_BUTTON, func_click=generate_question_clicked)

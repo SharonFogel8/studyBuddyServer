@@ -35,26 +35,36 @@
 # }
 # os.mkdir('temp/')
 # json_handler.write_to_json(data=data, json_path='temp/histort.json')
-class chat:
-    def __init__(self, id: str, user_id: str):
-        self.id = id
-        self.user_id = user_id
+from langchain_community.chat_message_histories import MongoDBChatMessageHistory
+from langchain_core.messages import HumanMessage, AIMessage
 
-    # def add_file(self, file: list):
-    #     self.files.append(file)
+import define
+from pages import login_page
+import json
+from Objects.user_object import user
 
-class user:
-    def __init__(self, name: str, uid: str, mail: str):
-        self.chats = []
-        self.name = name
-        self.uid = uid
-        self.mail = mail
+# history_data = login_page.get_session_from_db('3c4550ec-f7a9-499e-8239-d472598526df')
+# index = 0
+# for chat in history_data:
+#     # print(chat)
+#     if (chat['SessionId'] == index):
+#         dict_data = json.loads(chat['History'])
+#         print(dict_data)
+#         print(dict_data['data']['content'])
 
-    def add_new_chat(self)-> int:
-        new_chat = chat(id=len(self.chats), user_id=self.uid)
-        self.chats.append(new_chat)
-        return new_chat.id
+def convert_all_chats_to_dict(user_id: str):
+    history_data = login_page.get_session_from_db(user_id)
 
+    original_chat_history = []
+    for message in history_data:
+        history = json.loads(message['History'])
+        print(message)
+        if history['type'] == 'human':
+            original_chat_history.append(HumanMessage(history['data']['content']))
+        elif history['type'] == 'ai':
+            original_chat_history.append(AIMessage(history['data']['content']))
+    return original_chat_history
 
-my_user = user(name="kaka", uid="dsfdf", mail="dfsdf")
-print(my_user.add_new_chat())
+user_id = '3c4550ec-f7a9-499e-8239-d472598526df'
+chat_index = 0
+print(convert_all_chats_to_dict(user_id))

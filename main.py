@@ -8,6 +8,7 @@ from modules import data_manager
 from gui.htmlTemplates import css
 from pages.login_page import (login, cookies)
 from Objects.user_object import user
+from pages import login_page
 import define
 
 
@@ -18,17 +19,17 @@ def main():
 
     login()
     # print(st.session_state.username)
-    print(cookies)
+    # if not cookies.get():
     my_user = user(name=cookies["username"], uid=cookies["unique_key"], mail='cookies["email"]')
     buttons_actions.create_process_button(my_user)
-    print(cookies)
 
     st.write(css, unsafe_allow_html=True)
 
 
-    # with st.sidebar:
-    #     buttons_actions.new_chat_button(my_user)
-    #     # data_manager.import_history_file()
+    with st.sidebar:
+        buttons_actions.new_chat_button(my_user)
+        ui.sidebar_chat_history(my_user.uid)
+        # data_manager.import_history_file()
 
 #משימות שלא סיימתי : להחליט אם להשאיר את chats כlist או להפוך את זה לhash map ואז כששומרים שיחה צריך להחליט איך להגיד לו לאיזה שיחה להשתייך
 # בתוך chats צריך להיות dict של History chat, summarize, QA
