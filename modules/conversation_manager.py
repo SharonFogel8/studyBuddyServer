@@ -29,7 +29,6 @@ def handle_user_input():
     response = st.session_state.conversation({'question': st.session_state.user_input})
     st.session_state.chat_history = response[define.CHAT_HISTORY]
 
-    logging.info("write to history.json")
 
     ui.show_chat()
     return response

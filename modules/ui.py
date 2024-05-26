@@ -15,6 +15,7 @@ def get_user_question_input():
 
 
 def get_uploaded_pdfs():
+    print("upload")
     return st.file_uploader("Upload your PDFs here and click on 'Process'", accept_multiple_files=True)
 
 
@@ -40,20 +41,25 @@ def show_chat():
     st.session_state.user_input = ''
 
 def sidebar_chat_history(my_user: user):
+    st.empty()
     history_data = login_page.get_session_from_db(my_user.uid)
     print(f"history_data = {history_data}")
     st.sidebar.title("Chat History")
-    #add if to empty history
-    index = 0
-    print("got here!")
-    # for chat in history_data:
-    #     print(f"index = {index}")
-    #     if chat['SessionId'] >= index:
-    #         print(chat)
-    #         my_user.add_chat_by_id(chat['SessionId'])
-    #         st.sidebar.button(f"chat number {index}", on_click=buttons_actions.click_on_exist_chat, args=(my_user, chat['SessionId']))
-    #         st.sidebar.write("---")
-    #     index +=1
+    if history_data.collection.count_documents({}) == 0:
+        print("empty")
+        return
+    else:
+        #add if to empty history
+        index = 0
+        print("got here!")
+        for chat in history_data:
+            print(f"index = {index}")
+            if chat['SessionId'] >= index:
+                print(chat)
+                my_user.add_chat_by_id(chat['SessionId'])
+                st.sidebar.button(f"chat number {index}", on_click=buttons_actions.click_on_exist_chat, args=(my_user, chat['SessionId']))
+                st.sidebar.write("---")
+                index +=1
 
 
 

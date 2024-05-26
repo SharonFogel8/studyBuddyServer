@@ -26,10 +26,11 @@ def main():
             st.session_state.user = my_user
         else:
             my_user = st.session_state.user
+        buttons_actions.create_process_button(my_user)
         with st.sidebar:
             buttons_actions.new_chat_button(my_user)
             ui.sidebar_chat_history(my_user)
-        buttons_actions.create_process_button(my_user)
+
 
     st.write(css, unsafe_allow_html=True)
 
