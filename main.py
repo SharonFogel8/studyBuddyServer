@@ -22,7 +22,7 @@ def main():
     login()
     if "username" in cookies:
         if user not in st.session_state:
-            my_user = user(name=cookies["username"], uid=cookies["unique_key"], mail='cookies["email"]')
+            my_user = user(name=cookies["username"], uid=cookies["username"], mail='cookies["email"]')
             st.session_state.user = my_user
         else:
             my_user = st.session_state.user

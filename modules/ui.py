@@ -43,6 +43,7 @@ def show_chat():
 def sidebar_chat_history(my_user: user):
     st.empty()
     history_data = login_page.get_session_from_db(my_user.uid)
+    print(my_user.uid)
     print(f"history_data = {history_data}")
     st.sidebar.title("Chat History")
     if history_data.collection.count_documents({}) == 0:
