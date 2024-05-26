@@ -14,5 +14,10 @@ class user:
         self.current_chat = new_chat.id
         return new_chat.id
 
+
+    def add_chat_by_id(self, chat_id):
+        new_chat = chat(id=chat_id, user_id=self.uid)
+        self.chats.insert(chat_id, new_chat)
+
     def update_current_chat(self, chat_id: int):
         self.current_chat = chat_id
