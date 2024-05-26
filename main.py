@@ -5,6 +5,7 @@ from modules import buttons_actions, ui
 from gui.htmlTemplates import css
 from pages.login_page import (login, cookies)
 from Objects.user_object import user
+from pages import login_page
 
 
 
@@ -34,13 +35,6 @@ def main():
 
     st.write(css, unsafe_allow_html=True)
 
-
-
-        # data_manager.import_history_file()
-
-#משימות שלא סיימתי : להחליט אם להשאיר את chats כlist או להפוך את זה לhash map ואז כששומרים שיחה צריך להחליט איך להגיד לו לאיזה שיחה להשתייך
-# בתוך chats צריך להיות dict של History chat, summarize, QA
-# לבדוק איך עושים רמת קושי לשאלות
 
 if __name__ == '__main__':
     main()

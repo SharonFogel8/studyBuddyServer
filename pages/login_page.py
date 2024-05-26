@@ -76,6 +76,11 @@ def get_texts_chanks_from_db(uid: str):
     db = client["Texts"]
     return db[uid]
 
+def get_questions_from_db(uid: str):
+    client = connect_db()
+    db = client["Questions"]
+    return db[uid]
+
 
 def login():
     user_db = connect_users_db()

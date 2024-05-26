@@ -84,22 +84,93 @@ chat_index = 0
 #     print("nothing")
 # for h in his:
 #     print(h)
+#
+# history_data = login_page.get_session_from_db('f0be0a3d-c00f-4ed7-9fc6-e895c244daf5')
+# print(f"history_data = {history_data}")
+#
+# if history_data.collection.count_documents({}) == 0:
+#     print("empty")
+#
+# else:
+#     #add if to empty history
+#     index = 0
+#     print("got here!")
+#     for chat in history_data:
+#         print(f"index = {index}")
+#         if chat['SessionId'] >= index:
+#             print(chat)
+#             # my_user.add_chat_by_id(chat['SessionId'])
+#             # st.sidebar.button(f"chat number {index}", on_click=buttons_actions.click_on_exist_chat, args=(my_user, chat['SessionId']))
+#             # st.sidebar.write("---")
+#             index +=1
 
-history_data = login_page.get_session_from_db('f0be0a3d-c00f-4ed7-9fc6-e895c244daf5')
-print(f"history_data = {history_data}")
 
-if history_data.collection.count_documents({}) == 0:
-    print("empty")
+def show_question(questions: dict):
+    for ques, answer in questions.items():
+        print(f"ques = {ques}")
+        print(f"answer = {answer}")
+#
+# d = {"ques":"fdsdfsf", "fsdff": "fffff"}
+# show_question(d)
 
-else:
-    #add if to empty history
-    index = 0
-    print("got here!")
-    for chat in history_data:
-        print(f"index = {index}")
-        if chat['SessionId'] >= index:
-            print(chat)
-            # my_user.add_chat_by_id(chat['SessionId'])
-            # st.sidebar.button(f"chat number {index}", on_click=buttons_actions.click_on_exist_chat, args=(my_user, chat['SessionId']))
-            # st.sidebar.write("---")
-            index +=1
+import streamlit as st
+import streamlit.components.v1 as components
+
+import streamlit as st
+import streamlit as st
+import streamlit as st
+import streamlit as st
+from streamlit_carousel import carousel
+
+# Define the questions and answers dictionary
+qa_dict = {
+    "מהי הבירה של ישראל?": "ירושלים",
+    "מי היה הנשיא הראשון של ישראל?": "חיים ויצמן",
+    "מהו הנהר הארוך ביותר בעולם?": "האמזונס"
+}
+
+# Define the templates for user and bot messages
+def format_question_answer(question, answer):
+    user_template = '''
+    <div class="chat-message user">
+        <div class="avatar">
+            <img src="https://img.lovepik.com/original_origin_pic/18/12/19/b077a142c490cdf82a4aa9bd78f2d01a.png_wh860.png" style="max-height: 78px; max-width: 78px; border-radius: 50%; object-fit: cover;">
+        </div>
+        <div class="message">{{MSG}}</div>
+    </div>
+    '''
+    bot_template = '''
+    <div class="chat-message bot">
+        <div class="avatar">
+            <img src="https://img.lovepik.com/original_origin_pic/18/12/19/b077a142c490cdf82a4aa9bd78f2d01a.png_wh860.png" style="max-height: 78px; max-width: 78px; border-radius: 50%; object-fit: cover;">
+        </div>
+        <div class="message">{{MSG}}</div>
+    </div>
+    '''
+    return user_template.replace("{{MSG}}", question) + bot_template.replace("{{MSG}}",answer)
+
+# List of images (one for each question-answer pair)
+images = [
+    "https://img.lovepik.com/original_origin_pic/18/12/19/b077a142c490cdf82a4aa9bd78f2d01a.png_wh860.png",  # Example image URL
+    "https://img.lovepik.com/original_origin_pic/18/12/19/b077a142c490cdf82a4aa9bd78f2d01a.png_wh860.png",  # Example image URL
+    "https://img.lovepik.com/original_origin_pic/18/12/19/b077a142c490cdf82a4aa9bd78f2d01a.png_wh860.png"   # Example image URL
+]
+
+# Create a list of formatted question-answer pairs with titles, text, images, and empty links
+slides = [
+    {
+        "title": question,
+        "text": f"שאלה ותשובה {i + 1}",
+        "content": f'<div style="text-align: center;"><h3>שאלה:</h3><p>{question}</p><h3>תשובה:</h3><p>{answer}</p></div>',
+        "img": format_question_answer(question, answer),
+        "link": "#"
+    }
+    for i, (question, answer) in enumerate(qa_dict.items())
+]
+# Display the carousel
+# carousel(slides)
+st.slider()
+
+# Render the content using st.markdown
+for slide in slides:
+    st.markdown(slide["content"], unsafe_allow_html=True)

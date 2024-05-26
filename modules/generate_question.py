@@ -119,10 +119,11 @@ def llm_pipline(file_path):
 
 def generate_ques(text_chunks):
     answer_generation_chain, ques_list = llm_pipline(text_chunks)
+    answers = {}
     for question in ques_list:
-        st.write("question = : " + question)
         answer = answer_generation_chain.run(question)
-        st.write("answer = : " + answer)
+        answers[question] = answer
+    return answers
 
 
 

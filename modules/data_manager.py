@@ -38,28 +38,37 @@ import pymongo
 #         if "chat_history" not in st.session_state:
 #             st.session_state.chat_history = None
 
-def show_chats(history_data: dict):
-    ui.sidebar_chat_history(history_data)
+# def show_chats_history(history_data: dict):
+#     ui.sidebar_chat_history(history_data)
 
 
 def import_conversation(my_user: user, chat_id):
-    # buttons_actions.process_button_clicked(history_data[define.PDF_FILES])
-    st.session_state.chat_history = convert_json_to_chat_history_format(my_user.uid, chat_id)
-    ui.show_chat()
-    text_chunks_db = login_page.get_texts_chanks_from_db(my_user.uid)
-    text_to_vectore = ""
-    for text_chunk in text_chunks_db.find({}):
-        if text_chunk['session_id'] == chat_id:
-            for text in text_chunk['text_chunks']:
-                text_to_vectore += text
-    my_user.update_current_chat(chat_id)
-    text_chunks = text_processor.split_text_into_chunks(text_to_vectore)
-    vectorstore = text_processor.create_vector_store(text_chunks)
-    st.session_state.conversation = conversation_manager.get_conversation_chain(vectorstore)
-    buttons_actions.init_user_question_input(my_user)
+    with st.spinner("Processing"):
+        st.session_state.chat_history = convert_json_to_chat_history_format(my_user.uid, chat_id)
+        text_chunks_db = login_page.get_texts_chanks_from_db(my_user.uid)
+        text_to_vectore = ""
+        for text_chunk in text_chunks_db.find({}):
+            if text_chunk['session_id'] == chat_id:
+                for text in text_chunk['text_chunks']:
+                    text_to_vectore += text
+        my_user.update_current_chat(chat_id)
+        text_chunks = text_processor.split_text_into_chunks(text_to_vectore)
+        vectorstore = text_processor.create_vector_store(text_chunks)
+        st.session_state.conversation = conversation_manager.get_conversation_chain(vectorstore)
+        ui.show_chat()
+        buttons_actions.show_session_option(vectorstore=vectorstore, my_user=my_user,raw_text=text_to_vectore, is_chat=False)
+        buttons_actions.init_user_question_input(vectorstore=vectorstore, my_user=my_user, text=text_to_vectore)
 
+def import_questoions(my_user: user, chat_id):
+    question_history = login_page.get_questions_from_db(my_user.uid).find({})
+    question = {}
+    for ques in question_history:
+        if ques['session_id'] == chat_id:
+            question.update(ques['questions'])
 
-# def save_conversation(chat_index: int):
+    ui.show_question(question)
+
+    # def save_conversation(chat_index: int):
 #     response_json = json_handler.load_json_to_argument(define.HISTORY_JASON_PATH)
 #     response_json[define.CHATS][chat_index][define.CHAT_HISTORY] = convert_chat_history_to_json_format(st.session_state.chat_history)
 #     json_handler.write_to_json(response_json, define.HISTORY_JASON_PATH)
@@ -80,6 +89,7 @@ def import_conversation(my_user: user, chat_id):
 #     return [{'type': type(message).__name__, 'content': message.content} for message in chat_history]
 
 
+
 def convert_json_to_chat_history_format(user_id, chat_index):
     messages = []
     history_data = login_page.get_session_from_db(user_id)
@@ -97,6 +107,7 @@ def convert_json_to_chat_history_format(user_id, chat_index):
     print(original_chat_history)
     return original_chat_history
 
+
 def convert_all_chats_to_dict(user_id: str):
     history_data = login_page.get_session_from_db(user_id)
     original_chat_history = []
@@ -107,6 +118,7 @@ def convert_all_chats_to_dict(user_id: str):
             original_chat_history.append(AIMessage(message['data']['content']))
     return original_chat_history
 
+
 # def save_new_chat():
 #     try:
 #         history_data = json_handler.load_json_to_argument(define.HISTORY_JASON_PATH)
@@ -115,6 +127,7 @@ def convert_all_chats_to_dict(user_id: str):
 #         history_data = {}
 #         logging.info("new chat")
 #     json_handler.write_to_json(history_data, define.HISTORY_JASON_PATH)
+
 
 def save_conversation_to_db(response, my_user: user):
     message_history = MongoDBChatMessageHistory(
@@ -133,6 +146,7 @@ def save_conversation_to_db(response, my_user: user):
 #             dict_data = json.loads(chat['History'])
 #             print(dict_data['data']['content'])
 
+
 def save_text_to_db(vectorestore, my_user):
     vectore_history = MongoDBAtlasVectorSearch(text_key=my_user.current_chat, embedding_key=my_user.uid, embedding=OpenAIEmbeddings())
     vectore_history.aadd_documents()
@@ -143,6 +157,19 @@ def save_text_chunks_to_db(text_chunks, session_id, uid):
 
     data_to_save = {
         "text_chunks": text_chunks,
+        "session_id": session_id,
+        "user_id": uid
+    }
+
+    # Insert data into MongoDB
+    db.insert_one(data_to_save)
+
+
+def save_questions_to_db(questions: dict, session_id, uid):
+    db = login_page.get_questions_from_db(uid)
+
+    data_to_save = {
+        "questions": questions,
         "session_id": session_id,
         "user_id": uid
     }

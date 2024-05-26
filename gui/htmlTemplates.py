@@ -42,3 +42,8 @@ user_template = '''
     <div class="message">{{MSG}}</div>
 </div>
 '''
+
+question_templete = ''' 
+
+
+'''
