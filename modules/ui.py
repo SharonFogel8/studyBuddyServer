@@ -4,6 +4,7 @@ import define
 import modules.data_manager as data_manager
 from pages import login_page
 from Objects.user_object import user
+from modules import buttons_actions
 
 def render_header():
     st.markdown("<h1 style='text-align: center; color: black;'>Study Buddy</h1>", unsafe_allow_html=True)
@@ -12,8 +13,10 @@ def render_header():
 def get_user_question_input():
     return st.text_input("Ask a question about your documents:")
 
+
 def get_uploaded_pdfs():
     return st.file_uploader("Upload your PDFs here and click on 'Process'", accept_multiple_files=True)
+
 
 
 def show_options(func_click_chat, vectorstore):
@@ -38,14 +41,19 @@ def show_chat():
 
 def sidebar_chat_history(my_user: user):
     history_data = login_page.get_session_from_db(my_user.uid)
+    print(f"history_data = {history_data}")
     st.sidebar.title("Chat History")
     #add if to empty history
     index = 0
-    for chat in history_data:
-        if chat['SessionId'] >= index:
-            my_user.add_chat_by_id(chat['SessionId'])
-            st.sidebar.button(f"chat number {index}", on_click=data_manager.import_conversation, args=(my_user, chat['SessionId']))
-            st.sidebar.write("---")
-        index += 1
+    print("got here!")
+    # for chat in history_data:
+    #     print(f"index = {index}")
+    #     if chat['SessionId'] >= index:
+    #         print(chat)
+    #         my_user.add_chat_by_id(chat['SessionId'])
+    #         st.sidebar.button(f"chat number {index}", on_click=buttons_actions.click_on_exist_chat, args=(my_user, chat['SessionId']))
+    #         st.sidebar.write("---")
+    #     index +=1
+
 
 

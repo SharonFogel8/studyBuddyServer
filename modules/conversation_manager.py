@@ -3,8 +3,8 @@ import logging
 from langchain.chat_models import ChatOpenAI
 from langchain.memory import ConversationBufferMemory
 from langchain.chains import ConversationalRetrievalChain
-
-from gui import ui
+from modules import ui
+# from gui import ui
 import define
 
 
@@ -33,6 +33,8 @@ def handle_user_input():
 
     ui.show_chat()
     return response
+
+
 
 
 

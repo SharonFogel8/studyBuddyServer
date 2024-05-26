@@ -9,10 +9,11 @@ from langchain_core.messages.human import HumanMessage
 from langchain_core.messages.ai import AIMessage
 import json
 import define
-from modules import json_handler,conversation_manager, buttons_actions
-from gui import ui
+from modules import json_handler,conversation_manager, buttons_actions, ui
+# from gui import ui
 from Objects.user_object import user
 from pages import login_page
+from modules import text_processor
 import pymongo
 
 #
@@ -39,11 +40,24 @@ import pymongo
 
 def show_chats(history_data: dict):
     ui.sidebar_chat_history(history_data)
-#
-def import_conversation(user_id, chat_id):
+
+
+def import_conversation(my_user: user, chat_id):
     # buttons_actions.process_button_clicked(history_data[define.PDF_FILES])
-    st.session_state.chat_history = convert_json_to_chat_history_format(user_id, chat_id)
+    st.session_state.chat_history = convert_json_to_chat_history_format(my_user.uid, chat_id)
     ui.show_chat()
+    text_chunks_db = login_page.get_texts_chanks_from_db(my_user.uid)
+    text_to_vectore = ""
+    for text_chunk in text_chunks_db.find({}):
+        if text_chunk['session_id'] == chat_id:
+            for text in text_chunk['text_chunks']:
+                text_to_vectore += text
+    my_user.update_current_chat(chat_id)
+    text_chunks = text_processor.split_text_into_chunks(text_to_vectore)
+    vectorstore = text_processor.create_vector_store(text_chunks)
+    st.session_state.conversation = conversation_manager.get_conversation_chain(vectorstore)
+    buttons_actions.init_user_question_input(my_user)
+
 
 # def save_conversation(chat_index: int):
 #     response_json = json_handler.load_json_to_argument(define.HISTORY_JASON_PATH)
@@ -125,12 +139,7 @@ def save_text_to_db(vectorestore, my_user):
 
 
 def save_text_chunks_to_db(text_chunks, session_id, uid):
-    client = pymongo.MongoClient(
-        "mongodb+srv://noy4958:StudyBuddy@cluster0.ldrqjou.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0")
-    db = client["mydatabase"]
-    collection = db["mycollection"]
-
-    # Convert data to dictionaries
+    db = login_page.get_texts_chanks_from_db(uid)
 
     data_to_save = {
         "text_chunks": text_chunks,
@@ -139,6 +148,4 @@ def save_text_chunks_to_db(text_chunks, session_id, uid):
     }
 
     # Insert data into MongoDB
-    collection.insert_one(data_to_save)
-
-
+    db.insert_one(data_to_save)

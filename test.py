@@ -65,6 +65,16 @@ def convert_all_chats_to_dict(user_id: str):
             original_chat_history.append(AIMessage(history['data']['content']))
     return original_chat_history
 
-user_id = '3c4550ec-f7a9-499e-8239-d472598526df'
+user_id = '683b8837-7a82-4c19-b9c5-6714d938f305'
 chat_index = 0
-print(convert_all_chats_to_dict(user_id))
+# print(convert_all_chats_to_dict(user_id))
+
+text_chunks_db = login_page.get_texts_chanks_from_db(user_id)
+text_to_vectore = ""
+print(text_chunks_db)
+for text_chunk in text_chunks_db.find({}):
+    if text_chunk['session_id'] == 0:
+        for text in text_chunk['text_chunks']:
+            text_to_vectore += text
+
+print(text_to_vectore)

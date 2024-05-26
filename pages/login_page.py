@@ -66,6 +66,15 @@ def get_session_from_db(uid: str):
     db = client.get_database(define.CHATS)
     return db[uid].find({})
 
+def get_session_from_db(uid: str):
+    client = connect_db()
+    db = client.get_database(define.CHATS)
+    return db[uid].find({})
+
+def get_texts_chanks_from_db(uid: str):
+    client = connect_db()
+    db = client["Texts"]
+    return db[uid]
 
 
 def login():
