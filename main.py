@@ -1,12 +1,11 @@
 import streamlit as st
 from dotenv import load_dotenv
 # from gui import ui
-from modules import buttons_actions, ui
+from modules import buttons_actions
+from gui import ui
 from gui.htmlTemplates import css
-from pages.login_page import (login, cookies)
+from login_page import (login, cookies)
 from Objects.user_object import user
-from pages import login_page
-
 
 
 def main():
@@ -20,6 +19,9 @@ def main():
     if "chat_history" not in st.session_state:
         st.session_state.chat_history = None
 
+    if 'new_chat' not in st.session_state:
+        st.session_state.new_chat = True
+
     login()
     if "username" in cookies:
         if user not in st.session_state:
@@ -27,7 +29,8 @@ def main():
             st.session_state.user = my_user
         else:
             my_user = st.session_state.user
-        buttons_actions.create_process_button(my_user)
+        if st.session_state.new_chat == True:
+            buttons_actions.create_process_button(my_user)
         with st.sidebar:
             buttons_actions.new_chat_button(my_user)
             ui.sidebar_chat_history(my_user)

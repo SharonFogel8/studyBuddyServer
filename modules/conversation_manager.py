@@ -1,9 +1,8 @@
 import streamlit as st
-import logging
 from langchain.chat_models import ChatOpenAI
 from langchain.memory import ConversationBufferMemory
 from langchain.chains import ConversationalRetrievalChain
-from modules import ui
+from gui import ui
 # from gui import ui
 import define
 
@@ -30,7 +29,7 @@ def handle_user_input():
     st.session_state.chat_history = response[define.CHAT_HISTORY]
 
 
-    ui.show_chat()
+    # ui.show_chat()
     return response
 
 def handle_summarize():
