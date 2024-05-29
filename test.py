@@ -35,13 +35,10 @@
 # }
 # os.mkdir('temp/')
 # json_handler.write_to_json(data=data, json_path='temp/histort.json')
-from langchain_community.chat_message_histories import MongoDBChatMessageHistory
 from langchain_core.messages import HumanMessage, AIMessage
-import streamlit as st
-import define
-from pages import login_page
+import login_page
 import json
-from Objects.user_object import user
+
 
 # history_data = login_page.get_session_from_db('3c4550ec-f7a9-499e-8239-d472598526df')
 # index = 0
@@ -114,63 +111,29 @@ def show_question(questions: dict):
 # show_question(d)
 
 import streamlit as st
-import streamlit.components.v1 as components
 
-import streamlit as st
-import streamlit as st
-import streamlit as st
-import streamlit as st
-from streamlit_carousel import carousel
+st.title("Echo Bot")
 
-# Define the questions and answers dictionary
-qa_dict = {
-    "מהי הבירה של ישראל?": "ירושלים",
-    "מי היה הנשיא הראשון של ישראל?": "חיים ויצמן",
-    "מהו הנהר הארוך ביותר בעולם?": "האמזונס"
-}
+# Initialize chat history
+if "messages" not in st.session_state:
+    st.session_state.messages = []
 
-# Define the templates for user and bot messages
-def format_question_answer(question, answer):
-    user_template = '''
-    <div class="chat-message user">
-        <div class="avatar">
-            <img src="https://img.lovepik.com/original_origin_pic/18/12/19/b077a142c490cdf82a4aa9bd78f2d01a.png_wh860.png" style="max-height: 78px; max-width: 78px; border-radius: 50%; object-fit: cover;">
-        </div>
-        <div class="message">{{MSG}}</div>
-    </div>
-    '''
-    bot_template = '''
-    <div class="chat-message bot">
-        <div class="avatar">
-            <img src="https://img.lovepik.com/original_origin_pic/18/12/19/b077a142c490cdf82a4aa9bd78f2d01a.png_wh860.png" style="max-height: 78px; max-width: 78px; border-radius: 50%; object-fit: cover;">
-        </div>
-        <div class="message">{{MSG}}</div>
-    </div>
-    '''
-    return user_template.replace("{{MSG}}", question) + bot_template.replace("{{MSG}}",answer)
+# Display chat messages from history on app rerun
+for message in st.session_state.messages:
+    with st.chat_message(message["role"]):
+        st.markdown(message["content"])
 
-# List of images (one for each question-answer pair)
-images = [
-    "https://img.lovepik.com/original_origin_pic/18/12/19/b077a142c490cdf82a4aa9bd78f2d01a.png_wh860.png",  # Example image URL
-    "https://img.lovepik.com/original_origin_pic/18/12/19/b077a142c490cdf82a4aa9bd78f2d01a.png_wh860.png",  # Example image URL
-    "https://img.lovepik.com/original_origin_pic/18/12/19/b077a142c490cdf82a4aa9bd78f2d01a.png_wh860.png"   # Example image URL
-]
+# React to user input
+if prompt := st.chat_input("What is up?"):
+    # Display user message in chat message container
+    print(prompt)
+    st.chat_message("user").markdown(prompt)
+    # Add user message to chat history
+    st.session_state.messages.append({"role": "user", "content": prompt})
 
-# Create a list of formatted question-answer pairs with titles, text, images, and empty links
-slides = [
-    {
-        "title": question,
-        "text": f"שאלה ותשובה {i + 1}",
-        "content": f'<div style="text-align: center;"><h3>שאלה:</h3><p>{question}</p><h3>תשובה:</h3><p>{answer}</p></div>',
-        "img": format_question_answer(question, answer),
-        "link": "#"
-    }
-    for i, (question, answer) in enumerate(qa_dict.items())
-]
-# Display the carousel
-# carousel(slides)
-st.slider()
-
-# Render the content using st.markdown
-for slide in slides:
-    st.markdown(slide["content"], unsafe_allow_html=True)
+    response = f"Echo: {prompt}"
+    # Display assistant response in chat message container
+    with st.chat_message("assistant"):
+        st.markdown(response)
+    # Add assistant response to chat history
+    st.session_state.messages.append({"role": "assistant", "content": response})

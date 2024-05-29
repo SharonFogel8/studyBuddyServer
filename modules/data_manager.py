@@ -1,6 +1,4 @@
 import streamlit as st
-import os
-import logging
 
 from langchain_community.chat_message_histories import MongoDBChatMessageHistory
 from langchain.embeddings import OpenAIEmbeddings
@@ -9,12 +7,13 @@ from langchain_core.messages.human import HumanMessage
 from langchain_core.messages.ai import AIMessage
 import json
 import define
-from modules import json_handler,conversation_manager, buttons_actions, ui
+from modules import conversation_manager, buttons_actions
+from gui import ui
 # from gui import ui
 from Objects.user_object import user
-from pages import login_page
+import login_page
 from modules import text_processor
-import pymongo
+
 
 #
 # def import_history_file():
@@ -44,6 +43,7 @@ import pymongo
 
 def import_conversation(my_user: user, chat_id):
     with st.spinner("Processing"):
+        st.session_state.messages = []
         st.session_state.chat_history = convert_json_to_chat_history_format(my_user.uid, chat_id)
         text_chunks_db = login_page.get_texts_chanks_from_db(my_user.uid)
         text_to_vectore = ""
@@ -58,6 +58,7 @@ def import_conversation(my_user: user, chat_id):
         ui.show_chat()
         buttons_actions.show_session_option(vectorstore=vectorstore, my_user=my_user,raw_text=text_to_vectore, is_chat=False)
         buttons_actions.init_user_question_input(vectorstore=vectorstore, my_user=my_user, text=text_to_vectore)
+
 
 def import_questoions(my_user: user, chat_id):
     question_history = login_page.get_questions_from_db(my_user.uid).find({})
@@ -95,7 +96,6 @@ def convert_json_to_chat_history_format(user_id, chat_index):
     history_data = login_page.get_session_from_db(user_id)
     # print(f'history_data on convert func {history_data}')
     for chat in history_data:
-        print(f'history_data on convert func {chat}')
         if (chat['SessionId'] == chat_index):
             messages.append(json.loads(chat['History']))
     original_chat_history = []
@@ -104,7 +104,7 @@ def convert_json_to_chat_history_format(user_id, chat_index):
             original_chat_history.append(HumanMessage(message['data']['content']))
         elif message['type'] == 'ai':
             original_chat_history.append(AIMessage(message['data']['content']))
-    print(original_chat_history)
+    print(f'original_chat_history = {original_chat_history}')
     return original_chat_history
 
 

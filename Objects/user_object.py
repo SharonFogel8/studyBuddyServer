@@ -1,5 +1,5 @@
 from Objects.chats import chat
-from pages import login_page
+import login_page
 import random
 import string
 class user:
