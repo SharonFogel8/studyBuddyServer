@@ -1,1 +1,19 @@
 .env
+test.py
+/venv
+/temp
+/history
+
+# Ignore Python bytecode files and directories
+_pycache_/
+
+# Other entries in your .gitignore
+*.pyc
+*.pyo
+
+# Ignore virtual environment directories
+env/
+
+# Other ignores
+.DS_Store
+*.log
