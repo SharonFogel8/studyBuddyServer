@@ -8,7 +8,7 @@ class user:
         self.name = name
         self.uid = uid
         self.mail = mail
-        self.current_chat = 0
+        self.current_chat = None
 
     def add_new_chat(self)-> str:
         characters = string.ascii_letters + string.digits

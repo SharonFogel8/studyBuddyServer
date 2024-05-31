@@ -72,8 +72,8 @@ def show_summarize():
     st.session_state.user_input = ''
 
 
-def sidebar_chat_history(my_user: user):
-    history_data = login_page.get_session_from_db(my_user.uid)
+def sidebar_chat_history():
+    history_data = login_page.get_session_from_db(st.session_state.my_user.uid)
 
     if history_data.collection.count_documents({}) == 0:
         st.sidebar.title("Welcome to StuddyBuddy")
@@ -85,7 +85,7 @@ def sidebar_chat_history(my_user: user):
             if chat['SessionId'] not in index:
                 index.append(chat['SessionId'])
                 # my_user.add_chat_by_id(chat['SessionId'])
-                st.sidebar.button(f"chat number {chat['SessionId']}", on_click=buttons_actions.click_on_exist_chat, args=(my_user, chat['SessionId']))
+                st.sidebar.button(f"chat number {chat['SessionId']}", on_click=buttons_actions.click_on_exist_chat, args=(chat['SessionId'], ))
                 st.sidebar.write("---")
 
 
