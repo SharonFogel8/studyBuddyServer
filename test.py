@@ -124,7 +124,9 @@ for message in st.session_state.messages:
         st.markdown(message["content"])
 
 # React to user input
+prompt, col2 = st.columns([4, 1])
 if prompt := st.chat_input("What is up?"):
+
     # Display user message in chat message container
     print(prompt)
     st.chat_message("user").markdown(prompt)
@@ -137,3 +139,129 @@ if prompt := st.chat_input("What is up?"):
         st.markdown(response)
     # Add assistant response to chat history
     st.session_state.messages.append({"role": "assistant", "content": response})
+if col2.button("lala"):
+    st.write("lala")
+
+st.markdown("""
+    <style>
+    .stButton>button {
+        color: white;
+        background-color: #4CAF50;
+        padding: 10px 24px;
+        border: none;
+        border-radius: 12px;
+    }
+    </style>
+    """, unsafe_allow_html=True)
+
+st.title("Custom Styled Button Example")
+
+if st.button('Styled Button'):
+    st.write('Styled Button clicked!')
+else:
+    st.write('Styled Button not clicked.')
+
+
+# Adding custom HTML and CSS
+st.markdown("""
+    <style>
+    .stButton>button {
+        color: white;
+        background-color: #4CAF50;
+        padding: 10px 24px;
+        border: none;
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+    }
+    .stButton>button>svg {
+        margin-right: 8px;
+    }
+    </style>
+    """, unsafe_allow_html=True)
+
+st.title("Button with Icon Example")
+
+html_button = """
+    <button>
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check" viewBox="0 0 16 16">
+            <path d="M10.854 5.854a.5.5 0 0 0-.708-.708L7.5 7.793 5.854 6.146a.5.5 0 1 0-.708.708l2 2a.5.5 0 0 0 .708 0l4-4z"/>
+        </svg>
+            Click me
+        </button>
+    """
+
+# Displaying button
+if st.markdown(f"<div class='stButton'>{html_button}</div>", unsafe_allow_html=True):
+    st.write('Button with icon clicked!')
+else:
+    st.write('Button with icon not clicked.')
+
+    # Adding custom CSS to align the button to the left
+st.markdown("""
+    <style>
+    .left-align-button {
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        width: 100%;
+    }
+    .stButton button {
+        color: white;
+        background-color: #4CAF50;
+        padding: 10px 24px;
+        border: none;
+        border-radius: 12px;
+    }
+    </style>
+    """, unsafe_allow_html=True)
+
+st.title("Button Alignment Example")
+
+# Using a placeholder to insert the button with custom alignment
+left_align_placeholder = st.empty()
+with left_align_placeholder.container():
+    # Using HTML and CSS to create the button
+    st.markdown('<div class="left-align-button"><button class="stButton">Left Aligned Button</button></div>', unsafe_allow_html=True)
+
+    # Creating an actual button for interaction
+    if st.button('Hidden Button', key='real_button'):
+        st.write('Button clicked!')
+
+# JavaScript to simulate click on the real button
+st.markdown("""
+    <script>
+    document.querySelector('.left-align-button .stButton').onclick = function() {
+        document.querySelector('button[kind="primary"]').click();
+    };
+    </script>
+    """, unsafe_allow_html=True)
+
+
+
+st.markdown("""
+    <style>
+    .button-container {
+        display: flex;
+        justify-content: flex-start;
+        width: 100%;
+    }
+    .stButton button {
+        color: white;
+        background-color: #4CAF50;
+        padding: 10px 24px;
+        border: none;
+        border-radius: 12px;
+    }
+    </style>
+    """, unsafe_allow_html=True)
+
+st.title("Button Alignment Example")
+
+# Creating a container to hold the button and align it to the left
+button_container = st.container()
+with button_container:
+    st.markdown('<div class="button-container">', unsafe_allow_html=True)
+    if st.button('Left Aligned Button'):
+        st.write('Button clicked!')
+    st.markdown('</div>', unsafe_allow_html=True)
