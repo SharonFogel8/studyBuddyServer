@@ -31,9 +31,15 @@ def main():
             my_user = st.session_state.user
         if st.session_state.new_chat == True:
             buttons_actions.create_process_button(my_user)
+        elif prompt := st.chat_input("Ask a question about your documents:"):
+            print(prompt)
+            st.session_state.user_input = prompt
+            buttons_actions.get_user_question(my_user=my_user, vectorstore=st.session_state.vectorstore,
+                                              text=st.session_state.text)
         with st.sidebar:
             buttons_actions.new_chat_button(my_user)
             ui.sidebar_chat_history(my_user)
+
 
 
     st.write(css, unsafe_allow_html=True)
