@@ -14,7 +14,7 @@ def summarized_clicked(vectorstore, my_user: user, text: str):
     response = conversation_manager.handle_user_input()
     data_manager.save_conversation_to_db(response=response, my_user=my_user)
     ui.show_chat()
-    init_user_question_input(my_user, vectorstore, text)
+    # init_user_question_input(my_user, vectorstore, text)
     show_session_option(vectorstore=vectorstore, my_user=my_user, raw_text=text, is_chat=False, is_summarize=False)
 
 
@@ -22,7 +22,7 @@ def chat_clicked(my_user: user, vectorstore, text: str):
     create_button(my_user, vectorstore, text, button_name=define.CHAT_BUTTON, func_click=chat_clicked)
     st.write("Chat")
     st.session_state.conversation = conversation_manager.get_conversation_chain(vectorstore)
-    init_user_question_input(my_user, vectorstore, text)
+    # init_user_question_input(my_user, vectorstore, text)
     # show_session_option(vectorstore=vectorstore, my_user=my_user, raw_text=text, is_chat=False)
 
 
@@ -48,7 +48,7 @@ def process_button_clicked(my_user: user, pdf_docs):
 
 
 
-def show_session_option(vectorstore, my_user, raw_text, is_chat=True, is_summarize=True):
+def show_session_option(vectorstore, my_user, raw_text, is_chat=False, is_summarize=True):
     if is_chat:
         create_button(my_user, vectorstore, raw_text, button_name=define.CHAT_BUTTON, func_click=chat_clicked)
     if is_summarize:
@@ -84,7 +84,7 @@ def get_user_question(my_user: user, vectorstore, text: str):
     # data_manager.import_conversation(my_user=my_user, chat_id=my_user.current_chat)
     ui.show_chat()
     show_session_option(vectorstore=vectorstore, my_user=my_user, raw_text=text, is_chat=False)
-    init_user_question_input(my_user, vectorstore, text)
+    # init_user_question_input(my_user, vectorstore, text)
 
 def new_chat_button(my_user: user):
     create_button(my_user, button_name=define.NEW_CHAT_BUTTON,
@@ -95,5 +95,5 @@ def new_chat_clicked(my_user: user):
     st.session_state.new_chat = True
 
 
-def init_user_question_input(my_user, vectorstore, text: str):
-    st.text_input("Ask a question about your documents:", on_change=get_user_question, key="user_input", args=(my_user, vectorstore, text))
+# def init_user_question_input(my_user, vectorstore, text: str):
+#     st.text_input("Ask a question about your documents:", on_change=get_user_question, key="user_input", args=(my_user, vectorstore, text))

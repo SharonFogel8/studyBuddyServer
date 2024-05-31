@@ -57,7 +57,7 @@ def import_conversation(my_user: user, chat_id):
         st.session_state.conversation = conversation_manager.get_conversation_chain(vectorstore)
         ui.show_chat()
         buttons_actions.show_session_option(vectorstore=vectorstore, my_user=my_user,raw_text=text_to_vectore, is_chat=False)
-        buttons_actions.init_user_question_input(vectorstore=vectorstore, my_user=my_user, text=text_to_vectore)
+        # buttons_actions.init_user_question_input(vectorstore=vectorstore, my_user=my_user, text=text_to_vectore)
 
 
 def import_questoions(my_user: user, chat_id):
