@@ -32,7 +32,6 @@ def main():
         if st.session_state.new_chat == True:
             buttons_actions.create_process_button(my_user)
         elif prompt := st.chat_input("Ask a question about your documents:"):
-            print(prompt)
             st.session_state.user_input = prompt
             buttons_actions.get_user_question(my_user=my_user, vectorstore=st.session_state.vectorstore,
                                               text=st.session_state.text)
