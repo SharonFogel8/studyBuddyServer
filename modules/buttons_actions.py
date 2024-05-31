@@ -26,11 +26,28 @@ def chat_clicked(my_user: user, vectorstore, text: str):
     # show_session_option(vectorstore=vectorstore, my_user=my_user, raw_text=text, is_chat=False)
 
 
-def generate_question_clicked(vectorstore, raw_text, my_user: user):
-    answers = generate_question.generate_ques(raw_text)
-    data_manager.save_questions_to_db(session_id=my_user.current_chat, questions=answers,uid=my_user.uid)
-    click_on_exist_chat(my_user=my_user, chat_id=my_user.current_chat)
+# def generate_question_clicked(vectorstore, raw_text, my_user: user):
+#     answers = generate_question.generate_ques(raw_text)
+#     data_manager.save_questions_to_db(session_id=my_user.current_chat, questions=answers,uid=my_user.uid)
+#     click_on_exist_chat(my_user=my_user, chat_id=my_user.current_chat)
+def generate_questions_with_difficulty(vectorstore, raw_text, my_user,difficulty):
 
+    print("----------" + difficulty)
+    answers = generate_question.generate_ques(raw_text, difficulty)
+    data_manager.save_questions_to_db(session_id=my_user.current_chat, questions=answers, uid=my_user.uid,difficulty=difficulty)
+    ui.show_question(answers)
+
+
+def generate_question_clicked(vectorstore, raw_text, my_user: user):
+    st.title("Generate Questions")
+    create_button(vectorstore, button_name=define.GENERATE_QUESTION_BUTTON, func_click=generate_question_clicked)
+
+    # Display difficulty level buttons
+    st.write("Select the difficulty level:")
+
+    st.button('Easy', on_click=generate_questions_with_difficulty, args=(vectorstore, raw_text, my_user), kwargs={'difficulty': 'easy'})
+    st.button('Medium', on_click=generate_questions_with_difficulty, args=(vectorstore, raw_text, my_user), kwargs={'difficulty': 'medium'})
+    st.button('Hard', on_click=generate_questions_with_difficulty, args=(vectorstore, raw_text, my_user), kwargs={'difficulty': 'hard'})
 
 def process_button_clicked(my_user: user, pdf_docs):
     with st.spinner("Processing"):
@@ -43,8 +60,10 @@ def process_button_clicked(my_user: user, pdf_docs):
         my_user.update_session_from_db()
         my_user.add_new_chat()
         data_manager.save_text_chunks_to_db(text_chunks, my_user.current_chat, my_user.uid)
+        st.session_state.conversation = conversation_manager.get_conversation_chain(vectorstore)
     st.session_state.new_chat = False
     show_session_option(vectorstore=vectorstore, my_user=my_user, raw_text=raw_text)
+    # click_on_exist_chat(my_user=my_user, chat_id=my_user.current_chat)
 
 
 
