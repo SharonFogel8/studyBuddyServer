@@ -24,11 +24,45 @@ def chat_clicked(my_user: user, vectorstore, text: str):
     # show_session_option(vectorstore=vectorstore, my_user=my_user, raw_text=text, is_chat=False)
 
 
-def generate_question_clicked(vectorstore, raw_text, my_user: user):
-    create_button(vectorstore, button_name=define.GENERATE_QUESTION_BUTTON, func_click=generate_question_clicked)
-    answers = generate_question.generate_ques(raw_text)
-    data_manager.save_questions_to_db(session_id=my_user.current_chat, questions=answers,uid=my_user.uid)
+# def generate_question_clicked(vectorstore, raw_text, my_user: user):
+#     create_button(vectorstore, button_name=define.GENERATE_QUESTION_BUTTON, func_click=generate_question_clicked)
+#     answers = generate_question.generate_ques(raw_text)
+#     data_manager.save_questions_to_db(session_id=my_user.current_chat, questions=answers,uid=my_user.uid)
+#     ui.show_question(answers)
+
+def generate_questions_with_difficulty(vectorstore, raw_text, my_user,difficulty):
+
+    print("----------" + difficulty)
+    answers = generate_question.generate_ques(raw_text, difficulty)
+    data_manager.save_questions_to_db(session_id=my_user.current_chat, questions=answers, uid=my_user.uid,difficulty=difficulty)
     ui.show_question(answers)
+
+
+def generate_question_clicked(vectorstore, raw_text, my_user: user):
+    st.title("Generate Questions")
+    create_button(vectorstore, button_name=define.GENERATE_QUESTION_BUTTON, func_click=generate_question_clicked)
+
+    # Display difficulty level buttons
+    st.write("Select the difficulty level:")
+
+    st.button('Easy', on_click=generate_questions_with_difficulty, args=(vectorstore, raw_text, my_user), kwargs={'difficulty': 'easy'})
+    st.button('Medium', on_click=generate_questions_with_difficulty, args=(vectorstore, raw_text, my_user), kwargs={'difficulty': 'medium'})
+    st.button('Hard', on_click=generate_questions_with_difficulty, args=(vectorstore, raw_text, my_user), kwargs={'difficulty': 'hard'})
+
+    # create_button(vectorstore, raw_text,difficulty='medium',my_user, button_name='Medium', func_click=generate_questions_with_difficulty)
+    # create_button(vectorstore, raw_text, difficulty='hard',my_user, button_name='Hard', func_click=generate_questions_with_difficulty)
+    
+    # if col1.button('Easy'):
+    #     st.session_state.difficulty = 'easy'
+    #     generate_questions_with_difficulty(vectorstore, raw_text, 'easy', my_user)
+    # if col2.button('Medium'):
+    #     difficulty = 'medium'
+    #     generate_questions_with_difficulty(vectorstore, raw_text, difficulty, my_user)
+    # if col3.button('Hard'):
+    #     difficulty = 'hard'
+    #     generate_questions_with_difficulty(vectorstore, raw_text, difficulty, my_user)
+
+
 
 
 def process_button_clicked(my_user: user ,pdf_docs):

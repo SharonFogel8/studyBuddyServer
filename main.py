@@ -10,9 +10,11 @@ from pages import login_page
 
 
 def main():
+    
     if "set_page" not in st.session_state:
         st.set_page_config(page_title="Study Buddy", page_icon=":books:")
         st.session_state.set_page = 1
+
     print('main')
     load_dotenv()
     if "conversation" not in st.session_state:

@@ -49,7 +49,7 @@ def file_processing(question_gen):
 
     return document_ques_gen, document_answer_gen
 
-def llm_pipline(file_path):
+def llm_pipline(file_path, difficulty):
     document_ques_gen, document_answer_gen = file_processing(file_path)
 
     llm_ques_gen_pipeline = ChatOpenAI(
@@ -65,13 +65,13 @@ def llm_pipline(file_path):
         {text}
         ------------
 
-        Create questions that will prepare the coders or programmers for their tests.
+        Create: {difficulty} difficulty questions that will prepare the coders or programmers for their tests.
         Make sure not to lose any important information.
 
         QUESTIONS:
         """
 
-    PROMPT_QUESTIONS = PromptTemplate(template=prompt_template, input_variables=["text"])
+    PROMPT_QUESTIONS = PromptTemplate(template=prompt_template, input_variables=["text", "difficulty"])
 
     refine_template = ("""
         You are an expert at creating practice questions based on coding material and documentation.
@@ -83,14 +83,14 @@ def llm_pipline(file_path):
         {text}
         ------------
 
-        Given the new context, refine the original questions in English.
+        Given the new context, refine the original questions to be: {difficulty} difficulty in English.
         If the context is not helpful, please provide the original questions.
         QUESTIONS:
         """
                        )
 
     REFINE_PROMPT_QUESTIONS = PromptTemplate(
-        input_variables=["existing_answer", "text"],
+        input_variables=["existing_answer", "text", "difficulty"],
         template=refine_template,
     )
 
@@ -100,7 +100,7 @@ def llm_pipline(file_path):
                                           question_prompt=PROMPT_QUESTIONS,
                                           refine_prompt=REFINE_PROMPT_QUESTIONS)
 
-    ques = ques_gen_chain.run(document_ques_gen)
+    ques = ques_gen_chain.run(input_documents=document_ques_gen, difficulty=difficulty)
 
     embeddings = OpenAIEmbeddings()
     vector_store = FAISS.from_documents(document_answer_gen, embeddings)
@@ -117,8 +117,9 @@ def llm_pipline(file_path):
     return answer_generation_chain, filtered_ques_list
 
 
-def generate_ques(text_chunks):
-    answer_generation_chain, ques_list = llm_pipline(text_chunks)
+def generate_ques(text_chunks, difficulty):
+    print("------------- :)" + difficulty)
+    answer_generation_chain, ques_list = llm_pipline(text_chunks, difficulty)
     answers = {}
     for question in ques_list:
         answer = answer_generation_chain.run(question)
