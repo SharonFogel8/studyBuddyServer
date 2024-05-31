@@ -41,33 +41,37 @@ from modules import text_processor
 #     ui.sidebar_chat_history(history_data)
 
 
-def import_conversation(my_user: user, chat_id):
+def import_conversation(chat_id):
     with st.spinner("Processing"):
         st.session_state.messages = []
-        st.session_state.chat_history = convert_json_to_chat_history_format(my_user.uid, chat_id)
-        text_chunks_db = login_page.get_texts_chanks_from_db(my_user.uid)
+        st.session_state.chat_history = convert_json_to_chat_history_format(st.session_state.my_user.uid, chat_id)
+        text_chunks_db = login_page.get_texts_chanks_from_db(st.session_state.my_user.uid)
         text_to_vectore = ""
         for text_chunk in text_chunks_db.find({}):
             if text_chunk['session_id'] == chat_id:
                 for text in text_chunk['text_chunks']:
                     text_to_vectore += text
-        my_user.update_current_chat(chat_id)
+        st.session_state.my_user.update_current_chat(chat_id)
         text_chunks = text_processor.split_text_into_chunks(text_to_vectore)
         vectorstore = text_processor.create_vector_store(text_chunks)
+        st.session_state.vectorstore = vectorstore
+        st.session_state.text = text_to_vectore
         st.session_state.conversation = conversation_manager.get_conversation_chain(vectorstore)
         ui.show_chat()
-        buttons_actions.show_session_option(vectorstore=vectorstore, my_user=my_user,raw_text=text_to_vectore, is_chat=False)
+        buttons_actions.show_session_option(vectorstore=vectorstore, raw_text=text_to_vectore, is_chat=False)
         # buttons_actions.init_user_question_input(vectorstore=vectorstore, my_user=my_user, text=text_to_vectore)
 
 
-def import_questoions(my_user: user, chat_id):
-    question_history = login_page.get_questions_from_db(my_user.uid).find({})
+def import_questoions(chat_id):
+    question_history = login_page.get_questions_from_db(st.session_state.my_user.uid).find({})
     question = {}
     for ques in question_history:
         if ques['session_id'] == chat_id:
             question.update(ques['questions'])
 
+    st.session_state.questions = question
     ui.show_question(question)
+
 
     # def save_conversation(chat_index: int):
 #     response_json = json_handler.load_json_to_argument(define.HISTORY_JASON_PATH)
@@ -129,10 +133,10 @@ def convert_all_chats_to_dict(user_id: str):
 #     json_handler.write_to_json(history_data, define.HISTORY_JASON_PATH)
 
 
-def save_conversation_to_db(response, my_user: user):
+def save_conversation_to_db(response):
     message_history = MongoDBChatMessageHistory(
-        connection_string=define.CONNECTION_STRING, session_id=my_user.current_chat, database_name=define.CHATS,
-        collection_name=my_user.uid)
+        connection_string=define.CONNECTION_STRING, session_id=st.session_state.my_user.current_chat, database_name=define.CHATS,
+        collection_name=st.session_state.my_user.uid)
 
     message_history.add_user_message(response["question"])
     message_history.add_ai_message(response["answer"])
@@ -147,32 +151,32 @@ def save_conversation_to_db(response, my_user: user):
 #             print(dict_data['data']['content'])
 
 
-def save_text_to_db(vectorestore, my_user):
-    vectore_history = MongoDBAtlasVectorSearch(text_key=my_user.current_chat, embedding_key=my_user.uid, embedding=OpenAIEmbeddings())
+def save_text_to_db(vectorestore):
+    vectore_history = MongoDBAtlasVectorSearch(text_key=st.session_state.my_user.current_chat, embedding_key=st.session_state.my_user.uid, embedding=OpenAIEmbeddings())
     vectore_history.aadd_documents()
 
 
-def save_text_chunks_to_db(text_chunks, session_id, uid):
-    db = login_page.get_texts_chanks_from_db(uid)
+def save_text_chunks_to_db(text_chunks):
+    db = login_page.get_texts_chanks_from_db(st.session_state.my_user.uid)
 
     data_to_save = {
         "text_chunks": text_chunks,
-        "session_id": session_id,
-        "user_id": uid
+        "session_id": st.session_state.my_user.current_chat,
+        "user_id": st.session_state.my_user.uid
     }
 
     # Insert data into MongoDB
     db.insert_one(data_to_save)
 
 
-def save_questions_to_db(questions: dict, session_id: str, uid: str, difficulty: str):
-    db = login_page.get_questions_from_db(uid)
+def save_questions_to_db(questions: dict, session_id: str, difficulty: str):
+    db = login_page.get_questions_from_db(st.session_state.my_user.uid)
 
     data_to_save = {
         "questions": questions,
         "difficulty": difficulty,
-        "session_id": session_id,
-        "user_id": uid
+        "session_id": st.session_state.my_user.current_chat,
+        "user_id": st.session_state.my_user.uid
     }
 
     # Insert data into MongoDB

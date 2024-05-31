@@ -1,5 +1,7 @@
 import streamlit as st
 from dotenv import load_dotenv
+
+import define
 # from gui import ui
 from modules import buttons_actions
 from gui import ui
@@ -23,21 +25,23 @@ def main():
         st.session_state.new_chat = True
 
     login()
-    if "username" in cookies:
-        if user not in st.session_state:
-            my_user = user(name=cookies["username"], uid=cookies["username"], mail='cookies["email"]')
-            st.session_state.user = my_user
-        else:
-            my_user = st.session_state.user
+
+    if "username" in cookies and cookies["username"] != '':
+        if 'my_user' not in st.session_state:
+            st.session_state.my_user = user(name=cookies["username"], uid=cookies["username"], mail='cookies["email"]')
+
         if st.session_state.new_chat == True:
-            buttons_actions.create_process_button(my_user)
+            buttons_actions.create_process_button()
+
         elif prompt := st.chat_input("Ask a question about your documents:"):
             st.session_state.user_input = prompt
-            buttons_actions.get_user_question(my_user=my_user, vectorstore=st.session_state.vectorstore,
+            buttons_actions.get_user_question(vectorstore=st.session_state.vectorstore,
                                               text=st.session_state.text)
         with st.sidebar:
-            buttons_actions.new_chat_button(my_user)
-            ui.sidebar_chat_history(my_user)
+            # buttons_actions.new_chat_button(my_user)
+            buttons_actions.create_button(button_name=define.NEW_CHAT_BUTTON,
+                          func_click=buttons_actions.new_chat_clicked)
+            ui.sidebar_chat_history()
 
 
 

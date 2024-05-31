@@ -17,3 +17,4 @@ env/
 # Other ignores
 .DS_Store
 *.log
+.vs
