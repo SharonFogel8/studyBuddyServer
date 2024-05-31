@@ -5,7 +5,10 @@ from gui import ui
 from Objects.user_object import user
 
 def create_button(*args, button_name: str, func_click):
-    st.button(button_name, on_click=func_click, args=args)
+    try:
+        st.button(button_name, on_click=func_click, args=args)
+    except:
+        print("button already created")
 
 
 def summarized_clicked(vectorstore, text: str):
@@ -14,6 +17,8 @@ def summarized_clicked(vectorstore, text: str):
     response = conversation_manager.handle_user_input()
     data_manager.save_conversation_to_db(response=response)
     ui.show_chat()
+    if 'questions' in st.session_state:
+        ui.show_question(st.session_state.questions)
     # init_user_question_input(my_user, vectorstore, text)
     show_session_option(vectorstore=vectorstore, raw_text=text, is_chat=False, is_summarize=False)
 
@@ -31,10 +36,9 @@ def chat_clicked(vectorstore, text: str):
 #     data_manager.save_questions_to_db(session_id=my_user.current_chat, questions=answers,uid=my_user.uid)
 #     click_on_exist_chat(my_user=my_user, chat_id=my_user.current_chat)
 def generate_questions_with_difficulty(vectorstore, raw_text,difficulty):
-
     print("----------" + difficulty)
     answers = generate_question.generate_ques(raw_text, difficulty)
-    data_manager.save_questions_to_db(questions=answers,difficulty=difficulty)
+    data_manager.save_questions_to_db(questions=answers, difficulty=difficulty)
     ui.show_question(answers)
 
 
@@ -115,7 +119,9 @@ def new_chat_button():
 
 def new_chat_clicked():
     st.session_state.new_chat = True
-    create_process_button()
+    st.session_state.messages.clear()
+    st.session_state.questions.clear()
+    # create_process_button()
 
 
 

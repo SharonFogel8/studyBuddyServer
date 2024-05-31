@@ -58,8 +58,18 @@ def import_conversation(chat_id):
         st.session_state.text = text_to_vectore
         st.session_state.conversation = conversation_manager.get_conversation_chain(vectorstore)
         ui.show_chat()
+        import_messages()
         buttons_actions.show_session_option(vectorstore=vectorstore, raw_text=text_to_vectore, is_chat=False)
         # buttons_actions.init_user_question_input(vectorstore=vectorstore, my_user=my_user, text=text_to_vectore)
+
+def import_messages():
+    st.session_state.messages.clear()
+    for i, message in enumerate(st.session_state.chat_history):
+        if i % 2 == 0:
+            st.session_state.messages.append({"role": "user", "content": message.content})
+        else:
+            response = f" {message.content}"
+            st.session_state.messages.append({"role": "assistant", "content": response})
 
 
 def import_questoions(chat_id):
@@ -169,7 +179,7 @@ def save_text_chunks_to_db(text_chunks):
     db.insert_one(data_to_save)
 
 
-def save_questions_to_db(questions: dict, session_id: str, difficulty: str):
+def save_questions_to_db(questions: dict, difficulty: str):
     db = login_page.get_questions_from_db(st.session_state.my_user.uid)
 
     data_to_save = {

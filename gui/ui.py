@@ -48,17 +48,15 @@ def show_chat():
     for i, message in enumerate(st.session_state.chat_history):
         if i % 2 == 0:
             st.chat_message("user").markdown(message.content)
-            st.session_state.messages.append({"role": "user", "content": message.content})
         else:
             response = f" {message.content}"
             with st.chat_message("assistant"):
                 st.markdown(response)
-            st.session_state.messages.append({"role": "assistant", "content": response})
     st.session_state.user_input = ''
     st.session_state.new_chat = False
 
 def show_question(questions: dict):
-    for question, answer in questions.items():
+    for question, answer in st.session_state.questions.items():
         with st.expander(question):
             st.write(answer)
 
