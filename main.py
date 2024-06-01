@@ -25,6 +25,8 @@ def main():
 
     if 'new_chat' not in st.session_state:
         st.session_state.new_chat = True
+    if 'questions' not in st.session_state:
+        st.session_state.questions = []
     # if 'messages' is st.session_state:
     #     print('clear!')
     #     st.session_state.messages.clear()

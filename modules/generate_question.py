@@ -6,6 +6,7 @@ from langchain.embeddings.openai import OpenAIEmbeddings
 from langchain.vectorstores import FAISS
 from langchain.chains.summarize import load_summarize_chain
 from langchain.chains import RetrievalQA
+import streamlit as st
 
 def file_processing(question_gen):
 
@@ -100,12 +101,17 @@ def llm_pipline(file_path, difficulty):
 
 
 def generate_ques(text_chunks, difficulty):
-    print("------------- :)" + difficulty)
     answer_generation_chain, ques_list = llm_pipline(text_chunks, difficulty)
     answers = {}
     for question in ques_list:
         answer = answer_generation_chain.run(question)
         answers[question] = answer
-    return answers
+    ques = {
+        "questions": answers,
+        "difficulty": difficulty,
+        "session_id": st.session_state.my_user.current_chat,
+        "user_id": st.session_state.my_user.uid
+    }
+    return ques
 
 

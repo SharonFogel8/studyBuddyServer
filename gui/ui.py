@@ -58,12 +58,46 @@ def show_chat():
     st.session_state.user_input = ''
     st.session_state.new_chat = False
 
+# def show_question():
+#     for question, answer in st.session_state.questions.items():
+#         with st.expander(question):
+#             st.write(answer)
+
+
 def show_question():
-    for question, answer in st.session_state.questions.items():
-        with st.expander(question):
-            st.write(answer)
+    easy_questions = {}
+    medium_questions = {}
+    hard_questions = {}
+    for questions in st.session_state.questions:
+        print(questions)
+        if 'easy' in questions['difficulty']:
+            easy_questions.update(questions['questions'])
+        elif 'medium' in questions['difficulty']:
+            medium_questions.update(questions['questions'])
+        elif 'hard' in questions['difficulty']:
+            hard_questions.update(questions['questions'])
+
+    if easy_questions:
+        st.title("Easy questions")
+        for question, answer in easy_questions.items():
+
+            with st.expander(question):
+                st.write(answer)
+
+    if medium_questions:
+        st.title("Medium questions")
+        for question, answer in medium_questions.items():
+            with st.expander(question):
+                st.write(answer)
+
+    if hard_questions:
+        st.title("Hard questions")
+        for question, answer in hard_questions.items():
+            with st.expander(question):
+                st.write(answer)
 
 def show_summarize():
+
     for i, message in enumerate(st.session_state.summarize_history):
         if i % 2 == 0:
             st.write(user_template.replace("{{MSG}}", message), unsafe_allow_html=True)
