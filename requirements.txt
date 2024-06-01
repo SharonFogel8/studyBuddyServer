@@ -1,3 +1,4 @@
+streamlit>= 1.18.0
 aiohttp
 aiosignal
 altair
@@ -78,7 +79,6 @@ six
 smmap
 sniffio
 SQLAlchemy
-streamlit
 streamlit-cookies-manager
 sympy
 tenacity
