@@ -1,8 +1,11 @@
+import json
+
 import streamlit as st
 from gui.htmlTemplates import bot_template, user_template
 import login_page
 from Objects.user_object import user
 from modules import buttons_actions
+from modules import data_manager
 
 def render_header():
     st.markdown("<h1 style='text-align: center; color: black;'>Study Buddy</h1>", unsafe_allow_html=True)
@@ -83,9 +86,6 @@ def sidebar_chat_history():
             if chat['SessionId'] not in index:
                 index.append(chat['SessionId'])
                 # my_user.add_chat_by_id(chat['SessionId'])
-                st.sidebar.button(f"chat number {chat['SessionId']}", on_click=buttons_actions.click_on_exist_chat, args=(chat['SessionId'], ))
+                st.sidebar.button(f"{json.loads(chat['History'])['data']['content']}", on_click=buttons_actions.click_on_exist_chat, args=(chat['SessionId'], ), key=chat['SessionId'])
                 st.sidebar.write("---")
-
-
-
 
