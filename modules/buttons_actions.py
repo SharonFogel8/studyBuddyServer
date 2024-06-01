@@ -18,7 +18,7 @@ def summarized_clicked(vectorstore, text: str):
     data_manager.save_conversation_to_db(response=response)
     ui.show_chat()
     if 'questions' in st.session_state:
-        ui.show_question(st.session_state.questions)
+        ui.show_question()
     # init_user_question_input(my_user, vectorstore, text)
     show_session_option(vectorstore=vectorstore, raw_text=text, is_chat=False, is_summarize=False)
 
@@ -37,14 +37,17 @@ def chat_clicked(vectorstore, text: str):
 #     click_on_exist_chat(my_user=my_user, chat_id=my_user.current_chat)
 def generate_questions_with_difficulty(vectorstore, raw_text,difficulty):
     print("----------" + difficulty)
-    answers = generate_question.generate_ques(raw_text, difficulty)
-    data_manager.save_questions_to_db(questions=answers, difficulty=difficulty)
-    ui.show_question(answers)
+    st.session_state.questions = generate_question.generate_ques(raw_text, difficulty)
+    data_manager.save_questions_to_db(questions=st.session_state.questions, difficulty=difficulty)
+    if 'messages' in st.session_state:
+        ui.show_chat()
+    ui.show_question()
 
 
 def generate_question_clicked(vectorstore, raw_text):
+    if 'messages' in st.session_state:
+        ui.show_chat()
     st.title("Generate Questions")
-    create_button(vectorstore, button_name=define.GENERATE_QUESTION_BUTTON, func_click=generate_question_clicked)
 
     # Display difficulty level buttons
     st.write("Select the difficulty level:")
@@ -90,6 +93,8 @@ def check_status():
 
 
 def click_on_exist_chat(chat_id: int):
+    st.session_state.messages.clear()
+    st.session_state.questions.clear()
     data_manager.import_conversation(chat_id=chat_id)
     data_manager.import_questoions(chat_id=chat_id)
 
@@ -108,7 +113,7 @@ def get_user_question(vectorstore, text: str):
     # data_manager.import_conversation(my_user=my_user, chat_id=my_user.current_chat)
     ui.show_chat()
     if 'questions' in st.session_state:
-        ui.show_question(st.session_state.questions)
+        ui.show_question()
     show_session_option(vectorstore=vectorstore,raw_text=text, is_chat=False)
     # init_user_question_input(my_user, vectorstore, text)
 

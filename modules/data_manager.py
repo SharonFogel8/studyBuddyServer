@@ -80,7 +80,7 @@ def import_questoions(chat_id):
             question.update(ques['questions'])
 
     st.session_state.questions = question
-    ui.show_question(question)
+    ui.show_question()
 
 
     # def save_conversation(chat_index: int):

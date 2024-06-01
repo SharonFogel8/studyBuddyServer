@@ -55,7 +55,7 @@ def show_chat():
     st.session_state.user_input = ''
     st.session_state.new_chat = False
 
-def show_question(questions: dict):
+def show_question():
     for question, answer in st.session_state.questions.items():
         with st.expander(question):
             st.write(answer)
