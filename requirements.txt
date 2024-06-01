@@ -95,4 +95,3 @@ typing-inspect
 tzdata
 urllib3
 yarl
-```
