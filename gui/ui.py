@@ -78,20 +78,20 @@ def show_question():
             hard_questions.update(questions['questions'])
 
     if easy_questions:
-        st.title("Easy questions")
+        st.subheader("Easy questions")
         for question, answer in easy_questions.items():
 
             with st.expander(question):
                 st.write(answer)
 
     if medium_questions:
-        st.title("Medium questions")
+        st.subheader("Medium questions")
         for question, answer in medium_questions.items():
             with st.expander(question):
                 st.write(answer)
 
     if hard_questions:
-        st.title("Hard questions")
+        st.subheader("Hard questions")
         for question, answer in hard_questions.items():
             with st.expander(question):
                 st.write(answer)

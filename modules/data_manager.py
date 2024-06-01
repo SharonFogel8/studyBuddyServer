@@ -50,7 +50,7 @@ def import_conversation(chat_id):
         for text_chunk in text_chunks_db.find({}):
             if text_chunk['session_id'] == chat_id:
                 for text in text_chunk['text_chunks']:
-                    text_to_vectore += text
+                    text_to_vectore  += text
         st.session_state.my_user.update_current_chat(chat_id)
         text_chunks = text_processor.split_text_into_chunks(text_to_vectore)
         vectorstore = text_processor.create_vector_store(text_chunks)
@@ -59,7 +59,7 @@ def import_conversation(chat_id):
         st.session_state.conversation = conversation_manager.get_conversation_chain(vectorstore)
         ui.show_chat()
         import_messages()
-        buttons_actions.show_session_option(vectorstore=vectorstore, raw_text=text_to_vectore, is_chat=False)
+
         # buttons_actions.init_user_question_input(vectorstore=vectorstore, my_user=my_user, text=text_to_vectore)
 
 def import_messages():
@@ -93,9 +93,6 @@ def import_questions(chat_id):
             question.append(ques)
 
     st.session_state.questions = question
-    print('-----------------------------------------------')
-    print(st.session_state.questions)
-    print('-----------------------------------------------')
 
     ui.show_question()
 

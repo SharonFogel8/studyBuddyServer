@@ -123,6 +123,7 @@ def click_on_exist_chat(chat_id: int):
         st.session_state.questions.clear()
     data_manager.import_conversation(chat_id=chat_id)
     data_manager.import_questions(chat_id=chat_id)
+    show_session_option(vectorstore=st.session_state.vectorstore, raw_text=st.session_state.text, is_chat=False)
 
 
 
