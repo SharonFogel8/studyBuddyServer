@@ -23,6 +23,16 @@ css = '''
   padding: 0 1.5rem;
   color: #fff;
 }
+div.stButton > button:first-child {
+                    background-color: #FAECE2;
+                    color:#141314;
+                    border-radius: 20px;
+                }
+div.stButton > button:hover {
+                    background-color: #F9D6B1;
+                    color:##8C8060;
+                    border-radius: 20px;
+                    }
 '''
 
 bot_template = '''
@@ -47,3 +57,4 @@ question_templete = '''
 
 
 '''
+
