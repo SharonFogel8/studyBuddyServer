@@ -72,14 +72,31 @@ def import_messages():
             st.session_state.messages.append({"role": "assistant", "content": response})
 
 
-def import_questoions(chat_id):
+# def import_questoions(chat_id):
+#     question_history = login_page.get_questions_from_db(st.session_state.my_user.uid).find({})
+#     question = {}
+#     for ques in question_history:
+#         if ques['session_id'] == chat_id:
+#             difficulty = ques['difficulty']
+#             if difficulty not in question:
+#                 question[difficulty] = {}
+#             question[difficulty].update(ques['questions'])
+#
+#     st.session_state.questions = question
+#     ui.show_question()
+
+def import_questions(chat_id):
     question_history = login_page.get_questions_from_db(st.session_state.my_user.uid).find({})
-    question = {}
+    question = []
     for ques in question_history:
         if ques['session_id'] == chat_id:
-            question.update(ques['questions'])
+            question.append(ques)
 
     st.session_state.questions = question
+    print('-----------------------------------------------')
+    print(st.session_state.questions)
+    print('-----------------------------------------------')
+
     ui.show_question()
 
 
@@ -118,7 +135,6 @@ def convert_json_to_chat_history_format(user_id, chat_index):
             original_chat_history.append(HumanMessage(message['data']['content']))
         elif message['type'] == 'ai':
             original_chat_history.append(AIMessage(message['data']['content']))
-    print(f'original_chat_history = {original_chat_history}')
     return original_chat_history
 
 
@@ -182,12 +198,13 @@ def save_text_chunks_to_db(text_chunks):
 def save_questions_to_db(questions: dict, difficulty: str):
     db = login_page.get_questions_from_db(st.session_state.my_user.uid)
 
-    data_to_save = {
-        "questions": questions,
-        "difficulty": difficulty,
-        "session_id": st.session_state.my_user.current_chat,
-        "user_id": st.session_state.my_user.uid
-    }
+    # data_to_save = {
+    #     "questions": questions,
+    #     "difficulty": difficulty,
+    #     "session_id": st.session_state.my_user.current_chat,
+    #     "user_id": st.session_state.my_user.uid
+    # }
+    data_to_save = questions
 
     # Insert data into MongoDB
     db.insert_one(data_to_save)

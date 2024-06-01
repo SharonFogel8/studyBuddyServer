@@ -31,12 +31,15 @@ def chat_clicked(vectorstore, text: str):
     # show_session_option(vectorstore=vectorstore, my_user=my_user, raw_text=text, is_chat=False)
 
 
-def generate_questions_with_difficulty(vectorstore, raw_text,difficulty):
-    print("----------" + difficulty)
-    st.session_state.questions = generate_question.generate_ques(raw_text, difficulty)
-    data_manager.save_questions_to_db(questions=st.session_state.questions, difficulty=difficulty)
+def generate_questions_with_difficulty(vectorstore, raw_text, difficulty):
+    if 'questions' not in st.session_state:
+        st.session_state.questions = []
+    st.session_state.questions.append(generate_question.generate_ques(raw_text, difficulty))
+
+    data_manager.save_questions_to_db(questions=st.session_state.questions[-1], difficulty=difficulty)
     if 'messages' in st.session_state:
         ui.show_chat()
+
     ui.show_question()
     show_session_option(vectorstore=vectorstore, raw_text=raw_text)
 
@@ -44,6 +47,8 @@ def generate_questions_with_difficulty(vectorstore, raw_text,difficulty):
 def generate_question_clicked(vectorstore, raw_text):
     if 'messages' in st.session_state:
         ui.show_chat()
+    if 'questions' in st.session_state:
+        ui.show_question()
     st.title("Generate Questions")
 
     # Display difficulty level buttons
@@ -117,7 +122,7 @@ def click_on_exist_chat(chat_id: int):
     if 'questions' in st.session_state:
         st.session_state.questions.clear()
     data_manager.import_conversation(chat_id=chat_id)
-    data_manager.import_questoions(chat_id=chat_id)
+    data_manager.import_questions(chat_id=chat_id)
 
 
 
@@ -150,8 +155,10 @@ def new_chat_button():
 
 def new_chat_clicked():
     st.session_state.new_chat = True
-    st.session_state.messages.clear()
-    st.session_state.questions.clear()
+    if 'messages' in st.session_state:
+        st.session_state.messages.clear()
+    if 'questions' in st.session_state:
+        st.session_state.questions.clear()
     # create_process_button()
 
 

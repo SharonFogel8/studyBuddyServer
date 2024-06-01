@@ -33,6 +33,5 @@ def handle_user_input():
 def handle_summarize():
     response = st.session_state.summarize({'question': st.session_state.user_input})
     st.session_state.summarize_history = response[define.CHAT_HISTORY][1]
-    print(f"response = {type(response[define.CHAT_HISTORY][1])}")
     ui.show_chat()
     ui.show_summarize()
