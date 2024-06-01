@@ -11,9 +11,11 @@ from Objects.user_object import user
 
 
 def main():
-    if "set_page" not in st.session_state:
+    try:
         st.set_page_config(page_title="Study Buddy", page_icon=":books:")
-        st.session_state.set_page = 1
+    except:
+        print("welcome")
+
     print('main')
     load_dotenv()
     if "conversation" not in st.session_state:
@@ -23,6 +25,9 @@ def main():
 
     if 'new_chat' not in st.session_state:
         st.session_state.new_chat = True
+    # if 'messages' is st.session_state:
+    #     print('clear!')
+    #     st.session_state.messages.clear()
 
     login()
 
