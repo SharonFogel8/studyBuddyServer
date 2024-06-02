@@ -36,7 +36,7 @@ The AI Assistant for Students is a web application designed to help students fro
 ### :calling: Login
 Streamlit Authentication
 <p align="center">
-  <iframe width="560" height="315" src="/Users/lyrita/Desktop/SthdyBuddy/studyBuddyServer/drawable/login.mov" frameborder="0" allowfullscreen></iframe>
+  <iframe width="560" height="315" src="https://github.com/SharonFogel8/studyBuddyServer/blob/readme/drawable/login.mov" frameborder="0" allowfullscreen></iframe>
 </p>
 
 ### :calling: Uploading Files
