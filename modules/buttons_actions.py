@@ -13,7 +13,6 @@ def create_button(*args, button_name: str, func_click):
 
 
 def summarized_clicked(vectorstore, text: str):
-    create_button(vectorstore, button_name=define.SUMMARIZE_BUTTON, func_click=summarized_clicked)
     st.session_state['user_input'] = "Summarize"
     response = conversation_manager.handle_user_input()
     data_manager.save_conversation_to_db(response=response)

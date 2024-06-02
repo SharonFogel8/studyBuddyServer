@@ -12,5 +12,4 @@ def get_files_names(pdf_docs):
     names = []
     for pdf_file in pdf_docs:
         names.append(pdf_file.name)
-    print(names)
     return names

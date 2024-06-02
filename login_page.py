@@ -138,9 +138,10 @@ def login():
         if logout:
             user_update('')
             cookies["username"] = ""
-            update_unique_key()
             st.session_state.form = ''
+            st.session_state.clear()
             st.experimental_rerun()
+
 
     # 'Create Account' button
     if st.session_state.username == "" and st.session_state.form != 'signup_form':
