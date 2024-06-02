@@ -69,7 +69,6 @@ def show_question():
     medium_questions = {}
     hard_questions = {}
     for questions in st.session_state.questions:
-        print(questions)
         if 'easy' in questions['difficulty']:
             easy_questions.update(questions['questions'])
         elif 'medium' in questions['difficulty']:

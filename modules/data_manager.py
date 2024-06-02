@@ -165,14 +165,6 @@ def save_conversation_to_db(response):
     message_history.add_ai_message(response["answer"])
 
 
-# def get_conversation_from_db(user_id: str, chat_index: int):
-#     history_data = login_page.get_session_from_db(user_id)
-#
-#     for chat in history_data:
-#         if (chat['SessionId'] == chat_index):
-#             dict_data = json.loads(chat['History'])
-#             print(dict_data['data']['content'])
-
 
 def save_text_to_db(vectorestore):
     vectore_history = MongoDBAtlasVectorSearch(text_key=st.session_state.my_user.current_chat, embedding_key=st.session_state.my_user.uid, embedding=OpenAIEmbeddings())
@@ -194,13 +186,6 @@ def save_text_chunks_to_db(text_chunks):
 
 def save_questions_to_db(questions: dict, difficulty: str):
     db = login_page.get_questions_from_db(st.session_state.my_user.uid)
-
-    # data_to_save = {
-    #     "questions": questions,
-    #     "difficulty": difficulty,
-    #     "session_id": st.session_state.my_user.current_chat,
-    #     "user_id": st.session_state.my_user.uid
-    # }
     data_to_save = questions
 
     # Insert data into MongoDB

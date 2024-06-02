@@ -14,11 +14,10 @@ from PIL import Image
 def main():
     small_logo = Image.open(define.SMALL_LOGO_PATH)
     logo = Image.open(define.LOGO_PATH)
-    st.set_page_config(page_title="Study Buddy", page_icon=small_logo)
-    # try:
-    #
-    # except:
-    #     print("welcome")
+    try:
+        st.set_page_config(page_title="Study Buddy", page_icon=small_logo)
+    except:
+        print("welcome")
 
     print('main')
     load_dotenv()
@@ -31,9 +30,6 @@ def main():
         st.session_state.new_chat = True
     if 'questions' not in st.session_state:
         st.session_state.questions = []
-    # if 'messages' is st.session_state:
-    #     print('clear!')
-    #     st.session_state.messages.clear()
 
     st.sidebar.image(logo)
     login()
