@@ -140,6 +140,7 @@ def login():
             cookies["username"] = ""
             st.session_state.form = ''
             st.session_state.clear()
+            # cookies = ''
             st.experimental_rerun()
 
 

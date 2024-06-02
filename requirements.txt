@@ -96,3 +96,5 @@ tzdata
 urllib3
 yarl
 pillow
+setuptools
+fpdf

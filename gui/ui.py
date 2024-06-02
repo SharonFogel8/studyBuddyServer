@@ -5,7 +5,7 @@ from gui.htmlTemplates import bot_template, user_template
 import login_page
 from Objects.user_object import user
 from modules import buttons_actions
-from modules import data_manager
+from modules import data_manager, generate_question
 
 def render_header():
     st.markdown("<h1 style='text-align: center; color: black;'>Study Buddy</h1>", unsafe_allow_html=True)
@@ -101,6 +101,8 @@ def show_question():
         for question, answer in hard_questions.items():
             with st.expander(question):
                 st.write(answer)
+    generate_question.download_questions()
+
 
 def show_summarize():
 

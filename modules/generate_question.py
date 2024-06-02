@@ -7,6 +7,7 @@ from langchain.vectorstores import FAISS
 from langchain.chains.summarize import load_summarize_chain
 from langchain.chains import RetrievalQA
 import streamlit as st
+from modules import pdf_handler, buttons_actions
 
 def file_processing(question_gen):
 
@@ -113,5 +114,23 @@ def generate_ques(text_chunks, difficulty):
         "user_id": st.session_state.my_user.uid
     }
     return ques
+
+def download_questions():
+    if st.session_state.questions:
+
+        pdf = pdf_handler.create_questions_file()
+        pdf_output = 'questions_and_answers.pdf'
+        pdf.output(pdf_output, 'F')
+        with open(pdf_output, "rb") as f:
+            pdf_bytes = f.read()
+
+        st.download_button(
+            label="Download the questions",
+            data=pdf_bytes,
+            file_name=pdf_output,
+            mime="application/pdf",
+            on_click=buttons_actions.click_on_exist_chat,
+            args=(st.session_state.my_user.current_chat,)
+        )
 
 
