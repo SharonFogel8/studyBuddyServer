@@ -23,3 +23,6 @@ CHATS = "Chats"
 IMAGES_DIR_PATH = os.path.join(CURRENT_DIR, 'images')
 SMALL_LOGO_PATH = os.path.join(IMAGES_DIR_PATH, 'robot_head.png')
 LOGO_PATH = os.path.join(IMAGES_DIR_PATH, 'big_logo3.png')
+GUI_DIR_PATH = os.path.join(CURRENT_DIR, 'gui')
+FONTS_DIR_PATH = os.path.join(GUI_DIR_PATH, 'fonts')
+FONT_PATH = os.path.join(FONTS_DIR_PATH, 'DejaVuSansCondensed.ttf')

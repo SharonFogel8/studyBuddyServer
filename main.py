@@ -47,7 +47,6 @@ def main():
                                               text=st.session_state.text)
         with st.sidebar:
 
-            # buttons_actions.new_chat_button(my_user)
             buttons_actions.create_button(button_name=define.NEW_CHAT_BUTTON,
                           func_click=buttons_actions.new_chat_clicked)
             ui.sidebar_chat_history()
