@@ -1,5 +1,5 @@
 
-<p align="center"><img src="https://github.com/SharonFogel8/studyBuddyServer/blob/readme/drawable/logo.jpeg" height="120" width="300"></p>
+<p align="center"><img src="https://github.com/SharonFogel8/studyBuddyServer/blob/readme/drawable/logo.jpeg" height="200" width="300"></p>
 <br/>
 <h3 align="center">Web Application</h3>
 <h1 align="center">Welcome To Study Buddy!</h1>
@@ -35,33 +35,17 @@ The AI Assistant for Students is a web application designed to help students fro
 ## :computer: App Screens
 ### :calling: Login
 Streamlit Authentication
-<video src="https://github.com/SharonFogel8/studyBuddyServer/blob/readme/drawable/login.mov" width=180/>
+
+<img src="https://github.com/SharonFogel8/studyBuddyServer/blob/readme/drawable/login.gif" width="560">
 
 ### :calling: Uploading Files
-<p align="center">
-  <iframe width="560" height="315" src="/Users/lyrita/Desktop/SthdyBuddy/studyBuddyServer/drawable/login.mov" frameborder="0" allowfullscreen></iframe>
-</p>
 
-## Demo Video
+<img src="https://github.com/SharonFogel8/studyBuddyServer/blob/readme/drawable/WhatsApp%20Video%202024-06-02%20at%2019.52.27.gif" width="560">
 
+### :calling: Summarize PDF Files
 
+<img src="https://github.com/SharonFogel8/studyBuddyServer/blob/readme/drawable/summarize.gif" width="560">
 
+### :calling: Genereate Questions and Answers
 
-### 💃 Private Account
-- Upload photos using Image Picker
-- Search engine
-- google maps - find location by address
-- Calender - you can get date or time from user
-
-|Home page|Google maps|Search Engine|
-|---|---|---|
-|<img src="https://media.giphy.com/media/1O7hkrPEDXVWsWwxBa/giphy.gif" alt="animated"/>|<img src="https://media.giphy.com/media/k5mfcFpYSpWRowsUpa/giphy.gif" alt="animated"/>|<img src="https://media.giphy.com/media/hcfXtHdeXM7fYXM8n6/giphy.gif" alt="animated"/>
-
-|Make Review|Search page|Profile page|Reservation|
-|---|---|---|---|
-|<img src="https://media.giphy.com/media/ft3nsXBNr740EJZgYK/giphy.gif" alt="animated"/>|<img src="https://media.giphy.com/media/H9ywaDxnJ1SxwtmGXe/giphy.gif" alt="animated"/>|<img src="https://media.giphy.com/media/a14Z5ys9IKUy2jL7tn/giphy.gif" alt="animated"/>|<img src="https://media.giphy.com/media/r65IN7S5jU9YHX0DU8/giphy.gif" alt="animated"/>
-
-### 🍹: Business Account
-|Home page|Bar page|Tables & Ordres|
-|---|---|---|
-|<img src="https://media.giphy.com/media/5h9RTI05Hmv1iDACAh/giphy.gif" alt="animated"/>|<img src="https://media.giphy.com/media/0KvyBJgiodaxMQGhfh/giphy.gif" alt="animated"/>|<img src="https://media.giphy.com/media/mEC8JQBXxZIO5TpPWL/giphy.gif" alt="animated"/>|
+<img src="https://github.com/SharonFogel8/studyBuddyServer/blob/readme/drawable/generate.gif" width="560">
