@@ -1,5 +1,5 @@
 
-<p align="center"><img src="/Users/lyrita/Desktop/SthdyBuddy/studyBuddyServer/drawable/logo.jpeg" height="100" width="450"></p>
+<p align="center"><img src="https://github.com/SharonFogel8/studyBuddyServer/blob/readme/drawable/logo.jpeg" height="100" width="450"></p>
 <br/>
 <h3 align="center">Web Application</h3>
 <h1 align="center">Welcome To Study Buddy!</h1>
