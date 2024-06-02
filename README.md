@@ -1,5 +1,5 @@
 
-<p align="center"><img src="https://github.com/SharonFogel8/studyBuddyServer/blob/readme/drawable/logo.jpeg" height="100" width="450"></p>
+<p align="center"><img src="https://github.com/SharonFogel8/studyBuddyServer/blob/readme/drawable/logo.jpeg" height="120" width="300"></p>
 <br/>
 <h3 align="center">Web Application</h3>
 <h1 align="center">Welcome To Study Buddy!</h1>
@@ -35,9 +35,7 @@ The AI Assistant for Students is a web application designed to help students fro
 ## :computer: App Screens
 ### :calling: Login
 Streamlit Authentication
-<p align="center">
-  <iframe width="560" height="315" src="https://github.com/SharonFogel8/studyBuddyServer/blob/readme/drawable/login.mov" frameborder="0" allowfullscreen></iframe>
-</p>
+<video src="https://github.com/SharonFogel8/studyBuddyServer/blob/readme/drawable/login.mov" width=180/>
 
 ### :calling: Uploading Files
 <p align="center">
