@@ -4,6 +4,7 @@ from modules import conversation_manager, pdf_handler, text_processor, generate_
 from gui import ui, htmlTemplates
 from Objects.user_object import user
 
+
 def create_button(*args, button_name: str, func_click):
     try:
         return st.button(button_name, on_click=func_click, args=args)
@@ -27,8 +28,6 @@ def chat_clicked(vectorstore, text: str):
     create_button(vectorstore, text, button_name=define.CHAT_BUTTON, func_click=chat_clicked)
     st.write("Chat")
     st.session_state.conversation = conversation_manager.get_conversation_chain(vectorstore)
-    # init_user_question_input(my_user, vectorstore, text)
-    # show_session_option(vectorstore=vectorstore, my_user=my_user, raw_text=text, is_chat=False)
 
 
 def generate_questions_with_difficulty(vectorstore, raw_text, difficulty):
@@ -73,26 +72,11 @@ def process_button_clicked(pdf_docs):
         st.session_state.vectorstore = vectorstore
         st.session_state.text = raw_text
         st.session_state.my_user.add_new_chat()
-        # st.session_state.my_user.update_session_from_db()
         data_manager.save_text_chunks_to_db(text_chunks)
         st.session_state.conversation = conversation_manager.get_conversation_chain(vectorstore)
     st.session_state.new_chat = False
     show_session_option(vectorstore=vectorstore, raw_text=raw_text)
-    # click_on_exist_chat(my_user=my_user, chat_id=my_user.current_chat)
 
-
-
-# def show_session_option(vectorstore, raw_text, is_chat=False, is_summarize=True):
-#     if is_chat:
-#         create_button(vectorstore, raw_text, button_name=define.CHAT_BUTTON, func_click=chat_clicked)
-#
-#     col1, col2 = st.columns(2)  # Create two columns
-#
-#     with col1:
-#         create_button(vectorstore, raw_text, button_name=define.SUMMARIZE_BUTTON, func_click=summarized_clicked)
-#     with col2:
-#         create_button(vectorstore, raw_text,button_name=define.GENERATE_QUESTION_BUTTON,
-#                   func_click=generate_question_clicked)
 
 def show_session_option(vectorstore, raw_text, is_chat=False, is_summarize=True):
     if is_chat:
@@ -115,7 +99,6 @@ def check_status():
         get_user_question(vectoresotre=st.session_state.vectorstore, text=st.session_state.text)
 
 
-
 def click_on_exist_chat(chat_id: int):
     if 'messages' in st.session_state:
         st.session_state.messages.clear()
@@ -124,7 +107,6 @@ def click_on_exist_chat(chat_id: int):
     data_manager.import_conversation(chat_id=chat_id)
     data_manager.import_questions(chat_id=chat_id)
     show_session_option(vectorstore=st.session_state.vectorstore, raw_text=st.session_state.text, is_chat=False)
-
 
 
 def create_process_button():
@@ -142,12 +124,11 @@ def get_user_question(vectorstore, text: str):
     #     st.session_state.messages.clear()
     response = conversation_manager.handle_user_input()
     data_manager.save_conversation_to_db(response=response)
-    # data_manager.import_conversation(my_user=my_user, chat_id=my_user.current_chat)
     ui.show_chat()
     if 'questions' in st.session_state:
         ui.show_question()
     show_session_option(vectorstore=vectorstore,raw_text=text, is_chat=False)
-    # init_user_question_input(my_user, vectorstore, text)
+
 
 def new_chat_button():
     create_button(button_name=define.NEW_CHAT_BUTTON,
@@ -160,9 +141,3 @@ def new_chat_clicked():
         st.session_state.messages.clear()
     if 'questions' in st.session_state:
         st.session_state.questions.clear()
-    # create_process_button()
-
-
-
-# def init_user_question_input(my_user, vectorstore, text: str):
-#     st.text_input("Ask a question about your documents:", on_change=get_user_question, key="user_input", args=(my_user, vectorstore, text))

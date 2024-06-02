@@ -8,11 +8,14 @@ from gui import ui
 from gui.htmlTemplates import css
 from login_page import (login, cookies)
 from Objects.user_object import user
+from PIL import Image
 
 
 def main():
+    small_logo = Image.open(define.SMALL_LOGO_PATH)
+    logo = Image.open(define.LOGO_PATH)
     try:
-        st.set_page_config(page_title="Study Buddy", page_icon=":books:")
+        st.set_page_config(page_title="Study Buddy", page_icon=small_logo)
     except:
         print("welcome")
 
@@ -27,10 +30,8 @@ def main():
         st.session_state.new_chat = True
     if 'questions' not in st.session_state:
         st.session_state.questions = []
-    # if 'messages' is st.session_state:
-    #     print('clear!')
-    #     st.session_state.messages.clear()
 
+    st.sidebar.image(logo)
     login()
 
     if "username" in cookies and cookies["username"] != '':
@@ -45,6 +46,7 @@ def main():
             buttons_actions.get_user_question(vectorstore=st.session_state.vectorstore,
                                               text=st.session_state.text)
         with st.sidebar:
+
             # buttons_actions.new_chat_button(my_user)
             buttons_actions.create_button(button_name=define.NEW_CHAT_BUTTON,
                           func_click=buttons_actions.new_chat_clicked)
