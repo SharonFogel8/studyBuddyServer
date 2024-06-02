@@ -78,20 +78,20 @@ def show_question():
             hard_questions.update(questions['questions'])
 
     if easy_questions:
-        st.title("Easy questions")
+        st.subheader("Easy questions")
         for question, answer in easy_questions.items():
 
             with st.expander(question):
                 st.write(answer)
 
     if medium_questions:
-        st.title("Medium questions")
+        st.subheader("Medium questions")
         for question, answer in medium_questions.items():
             with st.expander(question):
                 st.write(answer)
 
     if hard_questions:
-        st.title("Hard questions")
+        st.subheader("Hard questions")
         for question, answer in hard_questions.items():
             with st.expander(question):
                 st.write(answer)
@@ -109,8 +109,9 @@ def show_summarize():
 
 def sidebar_chat_history():
     history_data = login_page.get_session_from_db(st.session_state.my_user.uid)
+    question_data = login_page.get_questions_from_db(st.session_state.my_user.uid).find({})
 
-    if history_data.collection.count_documents({}) == 0:
+    if history_data.collection.count_documents({}) == 0 and question_data.collection.count_documents({}) == 0:
         st.sidebar.title("Welcome to StuddyBuddy")
         return
     else:
@@ -121,5 +122,11 @@ def sidebar_chat_history():
                 index.append(chat['SessionId'])
                 # my_user.add_chat_by_id(chat['SessionId'])
                 st.sidebar.button(f"{json.loads(chat['History'])['data']['content']}", on_click=buttons_actions.click_on_exist_chat, args=(chat['SessionId'], ), key=chat['SessionId'])
+                st.sidebar.write("---")
+
+        for question in question_data:
+            if question['session_id'] not in index:
+                index.append(question['session_id'])
+                st.sidebar.button(list(question["questions"].keys())[0], on_click=buttons_actions.click_on_exist_chat, args=(question['session_id'], ), key=question['session_id'])
                 st.sidebar.write("---")
 

@@ -6,6 +6,7 @@ import uuid
 from streamlit_cookies_manager import EncryptedCookieManager
 import define
 
+
 # Initialize the cookie manager
 cookies = EncryptedCookieManager(
     prefix="myapp_",
