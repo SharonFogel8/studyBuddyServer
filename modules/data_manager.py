@@ -7,7 +7,7 @@ from langchain_core.messages.human import HumanMessage
 from langchain_core.messages.ai import AIMessage
 import json
 import define
-from modules import conversation_manager, buttons_actions
+from modules import conversation_manager, pdf_handler
 from gui import ui
 # from gui import ui
 from Objects.user_object import user
@@ -101,13 +101,14 @@ def save_text_to_db(vectorestore):
     vectore_history.aadd_documents()
 
 
-def save_text_chunks_to_db(text_chunks):
+def save_text_chunks_to_db(text_chunks, pdf_files):
     db = login_page.get_texts_chanks_from_db(st.session_state.my_user.uid)
-
+    names = pdf_handler.get_files_names(pdf_files)
     data_to_save = {
         "text_chunks": text_chunks,
         "session_id": st.session_state.my_user.current_chat,
-        "user_id": st.session_state.my_user.uid
+        "user_id": st.session_state.my_user.uid,
+        "file_name": names
     }
 
     # Insert data into MongoDB
@@ -120,3 +121,12 @@ def save_questions_to_db(questions: dict, difficulty: str):
 
     # Insert data into MongoDB
     db.insert_one(data_to_save)
+
+
+def get_file_names_from_db():
+    text_chunks_db = login_page.get_texts_chanks_from_db(st.session_state.my_user.uid).find({})
+    names = []
+    for it in text_chunks_db:
+        if it['session_id'] == st.session_state.my_user.current_chat:
+            names.append(it['file_name'])
+    return names

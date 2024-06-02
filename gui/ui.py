@@ -41,6 +41,7 @@ def get_uploaded_pdfs():
 #     st.session_state.user_input = ''
 
 def show_chat():
+    show_file_names()
     if "messages" not in st.session_state:
         st.session_state.messages = []
 
@@ -62,6 +63,12 @@ def show_chat():
 #     for question, answer in st.session_state.questions.items():
 #         with st.expander(question):
 #             st.write(answer)
+def show_file_names():
+    names = data_manager.get_file_names_from_db()
+    for name in names:
+        with st.expander('List of uploaded files to this Chat'):
+            for file in name:
+                st.write(file)
 
 
 def show_question():

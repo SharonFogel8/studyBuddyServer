@@ -76,9 +76,10 @@ def process_button_clicked(pdf_docs):
         st.session_state.vectorstore = vectorstore
         st.session_state.text = raw_text
         st.session_state.my_user.add_new_chat()
-        data_manager.save_text_chunks_to_db(text_chunks)
+        data_manager.save_text_chunks_to_db(text_chunks, pdf_docs)
         st.session_state.conversation = conversation_manager.get_conversation_chain(vectorstore)
     st.session_state.new_chat = False
+    ui.show_file_names()
     show_session_option(vectorstore=vectorstore, raw_text=raw_text)
 
 
