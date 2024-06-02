@@ -66,7 +66,11 @@ def generate_question_clicked(vectorstore, raw_text):
 def process_button_clicked(pdf_docs):
     with st.spinner("Processing"):
         print("processing")
-        raw_text = pdf_handler.extract_text_from_pdfs(pdf_docs)
+        try:
+            raw_text = pdf_handler.extract_text_from_pdfs(pdf_docs)
+        except:
+            st.error(" ⚠️ There is an Error with the file, Please upload PDF file! ")
+            return
         text_chunks = text_processor.split_text_into_chunks(raw_text)
         vectorstore = text_processor.create_vector_store(text_chunks)
         st.session_state.vectorstore = vectorstore
@@ -116,6 +120,7 @@ def create_process_button():
         st.session_state.questions.clear()
 
     pdf_docs = ui.get_uploaded_pdfs()
+
     create_button(pdf_docs, button_name=define.PROCESS_BUTTON, func_click=process_button_clicked)
 
 

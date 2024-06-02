@@ -15,32 +15,6 @@ import login_page
 from modules import text_processor
 
 
-#
-# def import_history_file():
-#     if os.path.exists(define.HISTORY_JASON_PATH):
-#         logging.info("Import History")
-#         print("Import History")
-#         history_data = json_handler.load_json_to_argument(define.HISTORY_JASON_PATH)
-#         show_chats(history_data)
-#         import_conversation(history_data)
-#     else:
-#         logging.info("No history were found")
-#         print("No history were found")
-#         try:
-#             os.makedirs(define.HISTORY_DIR_PATH)
-#         except:
-#             logging.info("history folder exist but empty")
-#             print("history folder exist but empty")
-#
-#         if "conversation" not in st.session_state:
-#             st.session_state.conversation = None
-#         if "chat_history" not in st.session_state:
-#             st.session_state.chat_history = None
-
-# def show_chats_history(history_data: dict):
-#     ui.sidebar_chat_history(history_data)
-
-
 def import_conversation(chat_id):
     with st.spinner("Processing"):
         st.session_state.messages = []
@@ -60,7 +34,6 @@ def import_conversation(chat_id):
         ui.show_chat()
         import_messages()
 
-        # buttons_actions.init_user_question_input(vectorstore=vectorstore, my_user=my_user, text=text_to_vectore)
 
 def import_messages():
     st.session_state.messages.clear()
@@ -72,18 +45,6 @@ def import_messages():
             st.session_state.messages.append({"role": "assistant", "content": response})
 
 
-# def import_questoions(chat_id):
-#     question_history = login_page.get_questions_from_db(st.session_state.my_user.uid).find({})
-#     question = {}
-#     for ques in question_history:
-#         if ques['session_id'] == chat_id:
-#             difficulty = ques['difficulty']
-#             if difficulty not in question:
-#                 question[difficulty] = {}
-#             question[difficulty].update(ques['questions'])
-#
-#     st.session_state.questions = question
-#     ui.show_question()
 
 def import_questions(chat_id):
     question_history = login_page.get_questions_from_db(st.session_state.my_user.uid).find({})
@@ -95,27 +56,6 @@ def import_questions(chat_id):
     st.session_state.questions = question
 
     ui.show_question()
-
-
-    # def save_conversation(chat_index: int):
-#     response_json = json_handler.load_json_to_argument(define.HISTORY_JASON_PATH)
-#     response_json[define.CHATS][chat_index][define.CHAT_HISTORY] = convert_chat_history_to_json_format(st.session_state.chat_history)
-#     json_handler.write_to_json(response_json, define.HISTORY_JASON_PATH)
-
-# def save_pdf_files(pdf_docs, chat_index):
-#     try:
-#         json = json_handler.load_json_to_argument(define.HISTORY_JASON_PATH)
-#         json[define.CHATS][chat_index][define.PDF_FILES] = pdf_docs
-#     except:
-#         json = {
-#             define.CHATS[
-#                 pdf_docs
-#             ]
-#         }
-#     json_handler.write_to_json(json, define.HISTORY_JASON_PATH)
-
-# def convert_chat_history_to_json_format(chat_history):
-#     return [{'type': type(message).__name__, 'content': message.content} for message in chat_history]
 
 
 
@@ -144,16 +84,6 @@ def convert_all_chats_to_dict(user_id: str):
         elif message['type'] == 'ai':
             original_chat_history.append(AIMessage(message['data']['content']))
     return original_chat_history
-
-
-# def save_new_chat():
-#     try:
-#         history_data = json_handler.load_json_to_argument(define.HISTORY_JASON_PATH)
-#         history_data[define.CHATS].append({})
-#     except:
-#         history_data = {}
-#         logging.info("new chat")
-#     json_handler.write_to_json(history_data, define.HISTORY_JASON_PATH)
 
 
 def save_conversation_to_db(response):
