@@ -24,32 +24,16 @@ css = '''
   color: #fff;
 }
 div.stButton > button:first-child {
-                    background-color: #FAECE2;
+                    background-color: #F6F8FB;
                     color:#141314;
-                    border-radius: 15px;
+                    border-radius: 10px;
                 }
 div.stButton > button:hover {
-                    background-color: #F9D6B1;
+                    background-color: #FCF2E8;
                     color:##8C8060;
-                    border-radius: 15px;
+                    border-radius: 10px;
                     }
-download_button {
-    display: inline-block;
-    padding: 0.5em 1em;
-    margin: 0.5em 0;
-    font-size: 1em;
-    font-weight: bold;
-    text-align: center;
-    text-decoration: none;
-    color: #FFF;
-    background-color: #007bff;
-    border-radius: 5px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    transition: background-color 0.3s;
-}
-download_button:hover {
-    background-color: #0056b3;
-}
+
 '''
 
 bot_template = '''
