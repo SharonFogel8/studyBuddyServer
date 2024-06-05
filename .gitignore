@@ -10,6 +10,7 @@ _pycache_/
 # Other entries in your .gitignore
 *.pyc
 *.pyo
+*.pdf
 
 # Ignore virtual environment directories
 env/
